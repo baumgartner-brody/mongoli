@@ -1,8 +1,16 @@
 #include "Game.h"
+#include "RENDER/TextureManager.h"
+
+#include <iostream>
 
 SDL_Renderer *Game::_renderer = nullptr;
 SDL_Window *Game::_window = nullptr;
 SDL_Event Game::_event;
+
+/* Global texture for testing texture drawing capability */
+SDL_Texture *t;
+
+SDL_Rect tstR = { 100, 100, 50, 50 };
 
 Game::Game() {
 
@@ -33,6 +41,12 @@ void Game::init(const std::string &window_name, const unsigned int &width, const
 
     SDL_SetRenderDrawColor(this->_renderer, 255, 0, 0, 255);
 
+    SDL_Surface *s = TextureManager::createSurface("src/test.png");
+    t = TextureManager::createTexture(s);
+
+    /* Important - all surfaces and textures must be freed when their time is up */
+    SDL_FreeSurface(s);
+
     this->_running = true;
 }
 
@@ -53,10 +67,14 @@ void Game::update() {
 
 void Game::draw() {
     SDL_RenderClear(this->_renderer);
+
+    TextureManager::draw(t, tstR);
+
     SDL_RenderPresent(this->_renderer);
 }
 
 void Game::clean() {
+    SDL_DestroyTexture(t);
     SDL_DestroyRenderer(this->_renderer);
 	SDL_DestroyWindow(this->_window);
 	SDL_Quit();
