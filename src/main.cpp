@@ -17,8 +17,6 @@ int main(int argv, char** args) {
 		game->draw();
 	}
 
-	game->clean();
-
 	delete game;
 
 	return 0;
