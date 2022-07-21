@@ -14,6 +14,7 @@ Manager *Game::_manager = new Manager;
 
 Entity &e(Game::_manager->addEntity());
 Entity &e2(Game::_manager->addEntity());
+Entity &e3(Game::_manager->addEntity());
 
 Game::Game() {
 
@@ -35,7 +36,7 @@ void Game::init(const std::string &window_name, const unsigned int &width, const
         exit(-1);
     }
 
-	this->_renderer = SDL_CreateRenderer(this->_window, -1, 0);
+	this->_renderer = SDL_CreateRenderer(this->_window, -1, SDL_RENDERER_PRESENTVSYNC);
     if (!this->_renderer) {
         std::cerr << "There was an error creating the SDL Renderer\n";
         std::cerr << SDL_GetError() << '\n';
@@ -64,7 +65,7 @@ void Game::init(const std::string &window_name, const unsigned int &width, const
 
     TextureManager::Surface::recolorSurface(s2, c_in, c_out);
 
-    SDL_Texture *t, *t2;
+    SDL_Texture *t, *t2, *t3;
 
     e.addComponent<Transform>(100, 100, 50, 50);
 
@@ -76,14 +77,19 @@ void Game::init(const std::string &window_name, const unsigned int &width, const
 
     t = TextureManager::Texture::createTexture(s);
     t2 = TextureManager::Texture::createTexture(s2);
+    t3 = TextureManager::Texture::createTexture("rexpaint_cp437_10x10.png");
 
     Game::_assetManager->createAsset("TEXTURE_1", t);
     Game::_assetManager->createAsset("TEXTURE_2", t2);
+    Game::_assetManager->createAsset("ASCII_FONT", t3);
 
     e.addComponent<Sprite>("TEXTURE_2", 0, 0, 10, 10);
     e2.getComponent<Transform>()._r.x = 200;
     e2.getComponent<Transform>()._r.y = 200;
     e2.addComponent<Sprite>("TEXTURE_1", 0, 0, 10, 10);
+
+    e3.addComponent<Transform>(300, 300, 10, 10);
+    e3.addComponent<Sprite>("ASCII_FONT", 0, 10, 10, 10);
 
     this->_running = true;
 }
@@ -110,6 +116,7 @@ void Game::draw() {
 
     e.draw();
     e2.draw();
+    e3.draw();
 
     SDL_RenderPresent(this->_renderer);
 }

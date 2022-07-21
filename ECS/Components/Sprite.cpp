@@ -3,14 +3,6 @@
 #include "../../RENDER/AssetManager.h"
 #include "../../RENDER/TextureManager.h"
 
-/* TODO: Optional SrcR constructor may not be viable */
-
-Sprite::Sprite(const std::string &asset_name) {
-
-    this->_texture = Game::_assetManager->getAsset(asset_name);
-    
-}
-
 Sprite::Sprite(const std::string &asset_name, const int &srcR_x, const int &srcR_y, const int &srcR_w, const int &srcR_h) {
     
     this->_texture = Game::_assetManager->getAsset(asset_name);
@@ -36,6 +28,18 @@ Sprite::Sprite(const Sprite &old) {
 }
 
 Sprite::~Sprite() {}
+
+void Sprite::setSrcR(const int &x, const int &y) noexcept {
+    this->_srcR.x = x;
+    this->_srcR.y = y;
+}
+
+void Sprite::setSrcR(const int &x, const int &y, const int &w, const int &h) noexcept {
+    this->_srcR.x = x;
+    this->_srcR.y = y;
+    this->_srcR.w = w;
+    this->_srcR.h = h;
+}
 
 void Sprite::init() {
     if (this->entity->hasComponent<Transform>()) {
