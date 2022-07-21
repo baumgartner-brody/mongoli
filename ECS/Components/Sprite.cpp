@@ -3,30 +3,49 @@
 #include "../../RENDER/AssetManager.h"
 #include "../../RENDER/TextureManager.h"
 
+/* TODO: Optional SrcR constructor may not be viable */
+
 Sprite::Sprite(const std::string &asset_name) {
 
-    this->_asset_name = asset_name;
+    this->_texture = Game::_assetManager->getAsset(asset_name);
     
 }
 
-Sprite::Sprite(const Sprite &old) {
-    this->_asset_name = old._asset_name;
-    this->_transform = old._transform;
+Sprite::Sprite(const std::string &asset_name, const int &srcR_x, const int &srcR_y, const int &srcR_w, const int &srcR_h) {
+    
+    this->_texture = Game::_assetManager->getAsset(asset_name);
+
+    this->_srcR.x = srcR_x;
+    this->_srcR.y = srcR_y;
+    this->_srcR.w = srcR_w;
+    this->_srcR.h = srcR_h;
+
 }
 
-Sprite::~Sprite() {
-    this->_asset_name.clear();
+Sprite::Sprite(const std::string &asset_name, const SDL_Rect &srcR) {
+
+    this->_texture = Game::_assetManager->getAsset(asset_name);
+    this->_srcR = srcR;
+
 }
+
+Sprite::Sprite(const Sprite &old) {
+    this->_texture = old._texture;
+    this->_transform = old._transform;
+    this->_srcR = old._srcR;
+}
+
+Sprite::~Sprite() {}
 
 void Sprite::init() {
     if (this->entity->hasComponent<Transform>()) {
         this->_transform = &this->entity->getComponent<Transform>();
     } else {
-        std::cerr << "Tried to create a sprite with an invalid asset name!\n"; 
+        std::cerr << "Tried to create a sprite without a Transform component!\n"; 
         exit(-1);
     }
 }
 
 void Sprite::draw() {
-    TextureManager::Texture::draw(Game::_assetManager->getAsset(this->_asset_name, nullptr), this->_transform->_r);
+    TextureManager::Texture::draw(this->_texture, this->_srcR, this->_transform->_r);
 }

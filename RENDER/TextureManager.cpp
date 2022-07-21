@@ -176,8 +176,16 @@ SDL_Texture* TextureManager::Texture::createTexture(const std::string &file_name
     return t;
 }
 
+/* Draws a texture to the renderer */
 void TextureManager::Texture::draw(SDL_Texture *t, const SDL_Rect &dstR) {
 
     SDL_RenderCopy(Game::_renderer, t, NULL, &dstR);
+
+}
+
+/* Draws a texture to the renderer (with additional srcR support) */
+void TextureManager::Texture::draw(SDL_Texture *t, const SDL_Rect &srcR, const SDL_Rect &dstR) {
+
+    SDL_RenderCopy(Game::_renderer, t, &srcR, &dstR);
 
 }

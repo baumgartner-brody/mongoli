@@ -12,6 +12,8 @@ class Transform;
 class Sprite : public Component {
 public:
     Sprite(const std::string &asset_name);
+    Sprite(const std::string &asset_name, const int &srcR_x, const int &srcR_y, const int &srcR_w, const int &srcR_h);
+    Sprite(const std::string &asset_name, const SDL_Rect &srcR);
     Sprite(const Sprite &old);
     ~Sprite();
 
@@ -28,13 +30,19 @@ public:
     }
 
     friend const bool operator==(const Sprite &s1, const Sprite &s2) noexcept {
-        return s1._asset_name == s2._asset_name;
+        if (s1._texture != s2._texture) return false;
+
+        //if (s1._srcR != s2._srcR) return false;
+
+        return true;
     }
     friend const bool operator!=(const Sprite &s1, const Sprite &s2) noexcept { return !(s1 == s2); }
 private:
     Transform *_transform = nullptr;
 
-    std::string _asset_name;
+    SDL_Rect _srcR;
+
+    SDL_Texture *_texture = nullptr;
 };
 
 #endif /* _SPRITE_H_ */

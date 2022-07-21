@@ -8,12 +8,9 @@
 
 SDL_Renderer *Game::_renderer = nullptr;
 SDL_Window *Game::_window = nullptr;
-SDL_Event Game::_event;
+SDL_Event *Game::_event = new SDL_Event;
 AssetManager *Game::_assetManager = new AssetManager;
 Manager *Game::_manager = new Manager;
-
-SDL_Rect tstR = { 100, 100, 50, 50 };
-SDL_Rect tstR2 = { 200, 200, 50, 50 };
 
 Entity &e(Game::_manager->addEntity());
 Entity &e2(Game::_manager->addEntity());
@@ -80,25 +77,25 @@ void Game::init(const std::string &window_name, const unsigned int &width, const
     t = TextureManager::Texture::createTexture(s);
     t2 = TextureManager::Texture::createTexture(s2);
 
-    Game::_assetManager->getAsset("TEXTURE_1", t);
-    Game::_assetManager->getAsset("TEXTURE_2", t2);
+    Game::_assetManager->createAsset("TEXTURE_1", t);
+    Game::_assetManager->createAsset("TEXTURE_2", t2);
 
-    e.addComponent<Sprite>("TEXTURE_2");
+    e.addComponent<Sprite>("TEXTURE_2", 0, 0, 10, 10);
     e2.getComponent<Transform>()._r.x = 200;
     e2.getComponent<Transform>()._r.y = 200;
-    e2.addComponent<Sprite>("TEXTURE_1");
+    e2.addComponent<Sprite>("TEXTURE_1", 0, 0, 10, 10);
 
     this->_running = true;
 }
 
 void Game::handleEvents() {
-    SDL_PollEvent(&this->_event);
+    SDL_PollEvent(this->_event);
 
-    if (this->_event.type == SDL_QUIT)
+    if (this->_event->type == SDL_QUIT)
         this->_running = false;
     
-    if (this->_event.type == SDL_KEYDOWN)
-        if (this->_event.key.keysym.sym == SDLK_ESCAPE)
+    if (this->_event->type == SDL_KEYDOWN)
+        if (this->_event->key.keysym.sym == SDLK_ESCAPE)
             this->_running = false;
 }
 
@@ -122,6 +119,12 @@ void Game::clean() {
     SDL_DestroyRenderer(this->_renderer);
 	SDL_DestroyWindow(this->_window);
 	SDL_Quit();
+
+    this->_renderer = nullptr;
+    this->_window = nullptr;
+
+    delete this->_event;
+    this->_event = nullptr;
     
     delete Game::_assetManager;
     Game::_assetManager = nullptr;

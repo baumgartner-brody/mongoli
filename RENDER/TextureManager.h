@@ -62,6 +62,9 @@ namespace TextureManager {
 
         /* Draws a texture to the renderer */
         void draw(SDL_Texture *t, const SDL_Rect &dstR);
+
+        /* Draws a texture to the renderer (with additional srcR support) */
+        void draw(SDL_Texture *t, const SDL_Rect &srcR, const SDL_Rect &dstR);
     };
 };
 

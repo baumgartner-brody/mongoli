@@ -12,7 +12,7 @@ public:
 
     static SDL_Renderer *_renderer;
     static SDL_Window *_window;
-    static SDL_Event _event;
+    static SDL_Event *_event;
     static AssetManager *_assetManager;
     static Manager *_manager;
 

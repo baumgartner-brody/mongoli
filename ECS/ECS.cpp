@@ -159,7 +159,7 @@ void Manager::update() {
 }
 
 void Manager::clear() noexcept {
-    std::cout << "Sizeof entities before clear(): " << this->_entities.size() << '\n';
+    //std::cout << "Sizeof entities before clear(): " << this->_entities.size() << '\n';
     /* Clear all the entities from their group vectors */
     for (auto & v : _groupedEntities) v.clear();
 
