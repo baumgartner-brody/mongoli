@@ -45,6 +45,7 @@ void SpriteComponent::init() {
 }
 
 void SpriteComponent::draw() {
+    /* TODO: May not be efficient to make a SDL_Rect every draw iteration. */
     SDL_Rect dstR = { _transform->xpos, _transform->ypos, _transform->width, _transform->height };
 
     TextureManager::draw(this->_asset->getTexture(), this->srcR, dstR);

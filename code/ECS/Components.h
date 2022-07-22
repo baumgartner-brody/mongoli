@@ -6,5 +6,6 @@
 #include "ECS.h"
 #include "Transform.h"
 #include "Sprite.h"
+#include "Hitbox.h"
 
 #endif /* _COMPONENTS_H_ */

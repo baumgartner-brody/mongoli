@@ -18,7 +18,7 @@ namespace TextManager {
     /* Initializes all text-related assets */
     void init();
 
-    /* Creates the appropriate SDL_Rect for an 8-bit char int */
+    /* Creates the appropriate SDL_Rect for an 8-bit char unsigned int */
     SDL_Rect createSourceRect(const Uint8 &c);
 
     
