@@ -30,6 +30,9 @@ Entity &e4(Game::manager->addEntity());
 
 bool did_the_thing = false;
 
+/* Sound test 7/22/2022 */
+Mix_Chunk *mix_chunk = nullptr;
+
 enum groupLabel : std::size_t {
     groupPlayers
 };
@@ -100,6 +103,20 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
         e3.addComponent<SpriteComponent>("FG_BRIGHTGREEN_BG_BLACK", TextManager::createSourceRect(127));
         e3.addGroup(groupPlayers);
 
+        /* Initialize the sound mixer */
+        if (Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1) {
+            std::cerr << "Could not initialize audio!\n";
+            exit(-1);
+        }
+
+        mix_chunk = Mix_LoadWAV("src/assets/high-pitch-sound.wav");
+
+        if (mix_chunk == nullptr) {
+            std::cerr << "The soundfile could not be loaded!\n";
+            std::cerr << "Error: \"" << SDL_GetError() << "\"\n";
+            exit(-1);
+        }
+
         /* Tell the game it is safe to update */
         this->_running = true;
 
@@ -112,6 +129,19 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
 void Game::handleEvents() {
     SDL_PollEvent(this->event);
     switch (this->event->type) {
+        case SDL_KEYDOWN:
+            switch (this->event->key.keysym.sym) {
+                case SDLK_2:
+                    std::cout << "2 was pressed.\n";
+                    if ( Mix_PlayChannel(-1, mix_chunk, 0) == -1 ) {
+                        std::cerr << "That audio could not be played.\n";
+                        exit(-1);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            break;
         case SDL_QUIT:
             this->_running = false;
             break;
@@ -169,6 +199,12 @@ void Game::clean() {
     /* Free/clear the assetmanager */
     delete Game::assetManager;
     Game::assetManager = nullptr;
+
+    /* Free sound */
+    Mix_FreeChunk(mix_chunk);
+    mix_chunk = nullptr;
+
+    Mix_CloseAudio();
 
     std::cout << "Successfully cleaned Game object\n";
 }

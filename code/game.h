@@ -2,6 +2,7 @@
 #define _GAME_H_
 
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_mixer.h"
 #include <string>
 
 class Manager;
