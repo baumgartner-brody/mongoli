@@ -30,6 +30,8 @@ Entity &e4(Game::manager->addEntity());
 
 bool did_the_thing = false;
 
+bool _2 = false;
+
 /* Sound test 7/22/2022 */
 Mix_Chunk *mix_chunk = nullptr;
 
@@ -128,13 +130,54 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
 
 void Game::handleEvents() {
     SDL_PollEvent(this->event);
+
+    if (this->event->type == SDL_QUIT) {
+        this->_running = false;
+    } else if (this->event->type == SDL_KEYDOWN) {
+        if (this->event->key.keysym.sym == SDLK_2 && !_2) {
+            _2 = true;
+
+            /* Report that 2 was pressed and play the test sound. */
+            std::cout << "2 was pressed.\n";
+            if ( Mix_PlayChannel(-1, mix_chunk, 0) == -1 ) {
+                std::cerr << "That audio could not be played.\n";
+                exit(-1);
+            }
+        }
+    } else if (this->event->type == SDL_KEYUP) {
+        if (this->event->key.keysym.sym == SDLK_2) {
+            _2 = false;
+
+            /* Report that 2 was pressed and play the test sound. */
+            std::cout << "2 was released.\n";
+            Mix_HaltChannel(-1);
+        }
+    }
+
+    /*
     switch (this->event->type) {
         case SDL_KEYDOWN:
             switch (this->event->key.keysym.sym) {
                 case SDLK_2:
+                    if (!_2) {
                     std::cout << "2 was pressed.\n";
                     if ( Mix_PlayChannel(-1, mix_chunk, 0) == -1 ) {
                         std::cerr << "That audio could not be played.\n";
+                        exit(-1);
+                    }
+                    break;
+                    }
+                default:
+                    break;
+            }
+            break;
+        case SDL_KEYUP:
+            switch (this->event->key.keysym.sym) {
+                case SDLK_2:
+                    _2 = false;
+                    std::cout << "2 was released.\n";
+                    if ( Mix_HaltChannel(-1) == -1 ) {
+                        std::cerr << "The audio could not be halted.\n";
                         exit(-1);
                     }
                     break;
@@ -148,6 +191,7 @@ void Game::handleEvents() {
         default:
             break;
     }
+    */
 }
 
 /* Updates all game objects */
