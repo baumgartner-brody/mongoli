@@ -5,6 +5,7 @@
 
 #include "ECS.h"
 #include "Transform.h"
+#include "Animation.h"
 #include "../render/TextureManager.h"
 #include "../render/AssetManager.h"
 
@@ -35,11 +36,21 @@ public:
 
     void copy(Entity &dst, const Entity &old) override;
 
+    void addAnimation(const uint8_t &index, const uint8_t &num_frames, const unsigned int &speed, const unsigned int &y);
+
     /* Equality operators */
     friend const bool operator==(const SpriteComponent &s1, const SpriteComponent &s2) noexcept;
     friend const bool operator!=(const SpriteComponent &s1, const SpriteComponent &s2) noexcept;
 
     const bool equals(const Entity &e) override { return (*this == e.getComponent<SpriteComponent>()); }
+
+    void play(const Uint8 &index);
+
+    const bool playingAnimation() const { return this->_current_animation != nullptr; }
+
+    const bool hasAnimation(const Uint8 &index) const { return this->_animations.count(index) != 0u; }
+
+    const bool hasAnimations() const { return !this->_animations.empty(); }
 
 private:
 
@@ -53,6 +64,10 @@ private:
 
     /* Backend deep copy work */
     void _copy(const SpriteComponent &old);
+
+    std::map<const Uint8, Animation*> _animations;
+
+    Animation *_current_animation = nullptr;
 };
 
 #endif /* _SPRITE_COMPONENT_H_ */

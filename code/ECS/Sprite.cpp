@@ -51,11 +51,34 @@ void SpriteComponent::draw() {
     TextureManager::draw(this->_asset->getTexture(), this->srcR, dstR);
 }
 
-void SpriteComponent::update() {}
+void SpriteComponent::update() {
+    if (this->playingAnimation()) {
+        this->srcR.y = this->_current_animation->_y;
+        this->srcR.x = this->srcR.w * (static_cast<unsigned int>((SDL_GetTicks() / this->_current_animation->_speed) % this->_current_animation->_num_frames) );
+    }
+}
+
+void SpriteComponent::play(const Uint8 &index) {
+    if (!this->hasAnimation(index)) {
+        std::cerr << "An animation with index " << static_cast<unsigned int>(index) << " already exists!\n";
+        exit(-1);
+    } else {
+        this->_current_animation = this->_animations[index];
+    }
+}
 
 /* Overwritten copy method */
 void SpriteComponent::copy(Entity &dst, const Entity &old) {
     dst.addComponent<SpriteComponent>(old.getComponent<SpriteComponent>());
+}
+
+void SpriteComponent::addAnimation(const uint8_t &index, const uint8_t &num_frames, const unsigned int &speed, const unsigned int &y) {
+    if (this->hasAnimation(index)) {
+        std::cerr << "An animation with index " << static_cast<unsigned int>(index) << " already exists!\n";
+        exit(-1);
+    } else {
+        this->_animations[index] = new Animation(index, num_frames, speed, y);
+    }
 }
 
 /* Operator== for SpriteComponents will only check if the _assets and _transforms point to the */
