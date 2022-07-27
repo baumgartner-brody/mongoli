@@ -17,6 +17,13 @@ SpriteComponent::SpriteComponent(const std::string &assetName, const SDL_Rect &s
     this->srcR = srcR;
 }
 
+/* Creates a SpriteComponent from an assetName and source rect dimensions. */
+SpriteComponent::SpriteComponent(const std::string &assetName, const int &xpos, const int &ypos, const unsigned int &w, const unsigned int &h) {
+    this->_asset = Game::assetManager->getAsset(assetName);
+    this->srcR.x = xpos; this->srcR.y = ypos;
+    this->srcR.w = w; this->srcR.h = h;
+}
+
 
 /* There is no dynamic memory managed by SpriteComponent */
 SpriteComponent::~SpriteComponent() {}
@@ -84,7 +91,8 @@ void SpriteComponent::addAnimation(const uint8_t &index, const uint8_t &num_fram
 /* Operator== for SpriteComponents will only check if the _assets and _transforms point to the */
 /*  same place. */
 const bool operator==(const SpriteComponent &s1, const SpriteComponent &s2) noexcept {
-    return (s1.srcR == s2.srcR) && (s1._asset == s2._asset) && (s1._transform == s2._transform);
+    return (s1.srcR == s2.srcR) && (s1._asset == s2._asset) && (s1._transform == s2._transform) 
+        && (s1._current_animation == s2._current_animation) && (s1._animations == s2._animations);
 }
 
 const bool operator!=(const SpriteComponent &s1, const SpriteComponent &s2) noexcept { return !(s1 == s2); }

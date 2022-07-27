@@ -97,7 +97,7 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
         e_copy = &Game::manager->copyEntity(e);
 
         e2.addComponent<TransformComponent>(400, 300, 10, 10);
-        e2.addComponent<SpriteComponent>(Game::assetManager->getAsset("FG_BRIGHTPURPLE_BG_BLACK"), 10, 0, 10, 10);
+        e2.addComponent<SpriteComponent>("FG_BRIGHTPURPLE_BG_BLACK", 10, 0, 10, 10);
         e2.addGroup(groupPlayers);
 
         e3.addComponent<TransformComponent>(300, 400, 20, 20);
@@ -105,8 +105,8 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
         e3.addGroup(groupPlayers);
 
         e5.addComponent<TransformComponent>(500, 500, 10, 10);
-        e5.addComponent<SpriteComponent>(Game::assetManager->getAsset("FG_BRIGHTRED_BG_BLACK"), 0, 0, 10, 10);
-        e5.getComponent<SpriteComponent>().addAnimation(0, 4, 300, 40);
+        e5.addComponent<SpriteComponent>("FG_BRIGHTRED_BG_BLACK", 0, 0, 10, 10);
+        e5.getComponent<SpriteComponent>().addAnimation(0, 4, 1000, 40);
         e5.getComponent<SpriteComponent>().play(0);
         e5.addGroup(groupPlayers);
 

@@ -14,11 +14,14 @@
 class SpriteComponent : public Component {
 public:
     // unused 
-    SpriteComponent(const std::string &fileName, const int &xpos, const int &ypos, const unsigned int &w, const unsigned int &h);
+    //SpriteComponent(const std::string &fileName, const int &xpos, const int &ypos, const unsigned int &w, const unsigned int &h);
     SpriteComponent(Asset *asset, const int &xpos, const int &ypos, const unsigned int &w, const unsigned int &h);
 
     /* Creates a SpriteComponent from an assetName and a source rect. */
     SpriteComponent(const std::string &assetName, const SDL_Rect &srcR);
+
+    /* Creates a SpriteComponent from an assetName and source rect dimensions. */
+    SpriteComponent(const std::string &assetName, const int &xpos, const int &ypos, const unsigned int &w, const unsigned int &h);
 
     /* SpriteComponent copy constructor */
     SpriteComponent(const SpriteComponent &old);
