@@ -41,7 +41,7 @@ void AssetManager::addAsset(const std::string &assetName, SDL_Texture *t) {
         this->assets[assetName] = new Asset(t);
 }
 
-void AssetManager::clear() {
+void AssetManager::clear() noexcept {
     for (auto & a : assets)
         delete a.second;
     assets.clear();

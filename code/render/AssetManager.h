@@ -29,6 +29,8 @@ private:
     ~Asset();
 
     SDL_Texture *_texture = nullptr;
+
+    //SDL_Surface *_surface = nullptr;    
 };
 
 class AssetManager {
@@ -45,7 +47,7 @@ public:
     /* Could be used to modify an asset but is mainly used for adding */
     void addAsset(const std::string &assetName, SDL_Texture *t);
 
-    void clear();
+    void clear() noexcept;
 private:
     std::map<const std::string, Asset*> assets;
 };

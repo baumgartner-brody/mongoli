@@ -26,7 +26,12 @@ SpriteComponent::SpriteComponent(const std::string &assetName, const int &xpos, 
 
 
 /* There is no dynamic memory managed by SpriteComponent */
-SpriteComponent::~SpriteComponent() {}
+SpriteComponent::~SpriteComponent() {
+    /* Deep delete the animations */
+    for (auto & a : this->_animations)
+        delete a.second;
+    this->_animations.clear();
+}
 
 /* SpriteComponent copy constructor */
 SpriteComponent::SpriteComponent(const SpriteComponent &old) {
@@ -101,4 +106,8 @@ const bool operator!=(const SpriteComponent &s1, const SpriteComponent &s2) noex
 void SpriteComponent::_copy(const SpriteComponent &old) {
     this->_asset = old._asset;
     this->srcR = old.srcR;
+
+    /* Shallow copy of animations */
+    this->_animations = old._animations;
+    this->_current_animation = old._current_animation;
 }
