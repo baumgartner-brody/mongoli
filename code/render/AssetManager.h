@@ -19,6 +19,9 @@ private:
     /* Assets require a Texture* to be created */
     Asset(SDL_Texture *t);
 
+    /* Some assets can have a texture and a surface */
+    Asset(SDL_Surface *s, SDL_Texture *t);
+
     /* Copy constructor for asset, (just a shallow copy of the Texture*) */
     Asset(const Asset &old);
 
@@ -30,7 +33,7 @@ private:
 
     SDL_Texture *_texture = nullptr;
 
-    //SDL_Surface *_surface = nullptr;    
+    SDL_Surface *_surface = nullptr;    
 };
 
 class AssetManager {
@@ -46,6 +49,9 @@ public:
 
     /* Could be used to modify an asset but is mainly used for adding */
     void addAsset(const std::string &assetName, SDL_Texture *t);
+
+    /* addAsset but with SDL_Surface* */
+    void addAsset(const std::string &assetName, SDL_Surface *s, SDL_Texture *t);
 
     void clear() noexcept;
 private:

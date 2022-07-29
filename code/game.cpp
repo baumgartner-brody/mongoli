@@ -8,8 +8,10 @@
 
 #include "ANSI/ANSI.h"
 #include "GUI/TextManager.h"
+#include "GUI/Menu.h"
 
 #include <iostream>
+#include <sstream>
 
 Game::Game() {
 
@@ -33,6 +35,9 @@ Entity &e2(Game::manager->addEntity());
 Entity &e3(Game::manager->addEntity());
 Entity &e4(Game::manager->addEntity());
 Entity &e5(Game::manager->addEntity());
+Entity &mouse(Game::manager->addEntity());
+
+Menu* menu = new Menu(&mouse);
 
 bool did_the_thing = false;
 
@@ -114,6 +119,10 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
         e5.getComponent<SpriteComponent>().addAnimation(0, 4, 1000, 40);
         e5.getComponent<SpriteComponent>().play(0);
         e5.addGroup(groupPlayers);
+
+        mouse.addComponent<HitboxComponent>(0, 0, 10, 10);
+        mouse.addComponent<MouseComponent>();
+        mouse.addGroup(groupPlayers);
 
         /* Initialize the sound mixer */
         if (Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1) {
@@ -214,6 +223,8 @@ void Game::update() {
     Game::manager->refresh();
     Game::manager->update();
 
+    menu->update();
+
     if (SDL_GetTicks() >= 6000 && !did_the_thing) {
         e_copy->getComponent<TransformComponent>().xpos = 200;
         std::cout << "moved e_copy over\n";
@@ -224,6 +235,16 @@ void Game::update() {
     if (PHYSICS::CollisionAABB(e2.getComponent<HitboxComponent>(), e3.getComponent<HitboxComponent>())) {
         std::cout << ANSI::TERMINAL::FOREGROUND::BRIGHT_CYAN << "Collision between e2 & e3!\n" << ANSI::TERMINAL::RESET;
     }
+
+    /* Report collisions between mouse and e3 */
+    if (PHYSICS::CollisionAABB(mouse.getComponent<HitboxComponent>(), e3.getComponent<HitboxComponent>())) {
+        std::cout << ANSI::TERMINAL::FOREGROUND::BRIGHT_RED << "Collision between mouse & e3!\n" << ANSI::TERMINAL::RESET;
+    }
+
+    std::stringstream ss;
+    ss << "X: " << mouse.getComponent<HitboxComponent>()._r.x << " Y: " << mouse.getComponent<HitboxComponent>()._r.y;
+
+    SDL_SetWindowTitle(Game::window, ss.str().c_str());
 }
 
 /* Presents the game to an SDL Renderer */
@@ -234,6 +255,8 @@ void Game::render() {
     SDL_RenderClear(Game::renderer);
 
     for (auto & p : players) p->draw();
+
+    menu->draw();
 
     SDL_RenderPresent(Game::renderer);
 }
@@ -261,6 +284,9 @@ void Game::clean() {
     /* Free/clear the assetmanager */
     delete Game::assetManager;
     Game::assetManager = nullptr;
+
+    delete menu;
+    menu = nullptr;
 
     /* Free sound */
     Mix_FreeChunk(mix_chunk);

@@ -57,6 +57,9 @@ namespace TextureManager {
         SDL_Texture* createRecoloredTexture(const std::string &fileName, const std::vector<SDL_Color> &c_in, const std::vector<SDL_Color> &c_out);
     };
 
+    /* Draws a rectangle with the specifications and color to the game renderer */
+    void drawRect(const SDL_Rect &r, const SDL_Color &c);
+
     /* Draws SDL_Texture *t to the game renderer */
     void draw(SDL_Texture *t, SDL_Rect &src, SDL_Rect &dst);
 

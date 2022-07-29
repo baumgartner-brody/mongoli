@@ -191,6 +191,15 @@ SDL_Texture* TextureManager::TextureTools::createRecoloredTexture(const std::str
 
 }
 
+/* Draws a rectangle with the specifications and color to the game renderer */
+void TextureManager::drawRect(const SDL_Rect &r, const SDL_Color &c) {
+    SDL_Color tmp;
+    SDL_GetRenderDrawColor(Game::renderer, &tmp.r, &tmp.g, &tmp.b, &tmp.a);
+    SDL_SetRenderDrawColor(Game::renderer, c.r, c.g, c.b, c.a);
+    SDL_RenderFillRect(Game::renderer, &r); // SDL_RenderDrawRect will draw the outline of the rect 
+    SDL_SetRenderDrawColor(Game::renderer, tmp.r, tmp.g, tmp.g, tmp.a);
+}
+
 void TextureManager::draw(SDL_Texture *t, SDL_Rect &src, SDL_Rect &dst) {
     SDL_RenderCopy(Game::renderer, t, &src, &dst);
 }

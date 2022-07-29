@@ -1,11 +1,19 @@
 #include "AssetManager.h"
 
+/* Assets require a Texture* to be created */
 Asset::Asset(SDL_Texture *t) {
+    this->_texture = t;
+}
+
+/* Some assets can have a texture and a surface */
+Asset::Asset(SDL_Surface *s, SDL_Texture *t) {
+    this->_surface = s;
     this->_texture = t;
 }
 
 /* Copy constructor for asset, (just a shallow copy of the Texture*) */
 Asset::Asset(const Asset &old) {
+    this->_surface = old._surface;
     this->_texture = old._texture;
 }
 
@@ -22,7 +30,9 @@ const Asset& Asset::operator=(const Asset &old) {
 /* Calls SDL_DestroyTexture for the internal _texture */
 Asset::~Asset() {
     SDL_DestroyTexture(this->_texture);
+    SDL_FreeSurface(this->_surface);
     this->_texture = nullptr;
+    this->_surface = nullptr;
 }
 
 AssetManager::AssetManager() {
@@ -39,6 +49,12 @@ void AssetManager::addAsset(const std::string &assetName, SDL_Texture *t) {
     /* Prevent duplicate assets (and mem leaks) */
     if (this->assets.count(assetName) == 0)
         this->assets[assetName] = new Asset(t);
+}
+
+void AssetManager::addAsset(const std::string &assetName, SDL_Surface *s, SDL_Texture *t) {
+    /* Prevent duplicate assets (and mem leaks) */
+    if (this->assets.count(assetName) == 0)
+        this->assets[assetName] = new Asset(s, t);
 }
 
 void AssetManager::clear() noexcept {

@@ -8,5 +8,6 @@
 #include "Sprite.h"
 #include "Hitbox.h"
 #include "Keyboard.h"
+#include "Mouse.h"
 
 #endif /* _COMPONENTS_H_ */

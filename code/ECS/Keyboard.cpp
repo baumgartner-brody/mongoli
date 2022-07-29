@@ -3,7 +3,8 @@
 #include "../game.h"
 
 KeyboardController::~KeyboardController() {
-
+    this->_event = nullptr;
+    this->_transform = nullptr;
 }
 
 /* Attempt to retreive this entity's transform component, exit if it is not found */
