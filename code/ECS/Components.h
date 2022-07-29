@@ -7,5 +7,6 @@
 #include "Transform.h"
 #include "Sprite.h"
 #include "Hitbox.h"
+#include "Keyboard.h"
 
 #endif /* _COMPONENTS_H_ */

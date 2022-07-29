@@ -35,12 +35,12 @@ public:
 
     const bool equals(const Entity &e) override { return (*this == e.getComponent<HitboxComponent>()); } 
 
+    /* The SDL_Rect that encompasses this hitbox */
+    SDL_Rect _r; 
+
 private:
     /* A hitbox either has a transform component upon creation or does not. */
     TransformComponent *_transform = nullptr;
-
-    /* The SDL_Rect that encompasses this hitbox */
-    SDL_Rect _r; 
 
     /* Copy contents of h into *this */
     void _copy(const HitboxComponent &old) noexcept;

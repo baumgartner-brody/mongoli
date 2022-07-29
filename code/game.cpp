@@ -4,6 +4,8 @@
 #include "render/TextureManager.h"
 #include "render/AssetManager.h"
 
+#include "PHYSICS/Collision.h"
+
 #include "ANSI/ANSI.h"
 #include "GUI/TextManager.h"
 
@@ -21,6 +23,9 @@ Game::~Game() {
 SDL_Renderer* Game::renderer;
 Manager* Game::manager = new Manager();
 AssetManager* Game::assetManager = new AssetManager();
+
+/* Initialize the SDL_Event* */
+SDL_Event* Game::event = new SDL_Event(); 
 
 Entity &e(Game::manager->addEntity());
 Entity *e_copy;
@@ -64,9 +69,6 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
         /* Set render color to black */
         SDL_SetRenderDrawColor(Game::renderer, 0, 0, 0, 255);
 
-        /* Initialize the SDL_Event* */
-        this->event = new SDL_Event(); 
-
         /* Just for shits */
         std::cout << "Calling TextManager::init()\n";
         TextManager::init();
@@ -98,10 +100,13 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
 
         e2.addComponent<TransformComponent>(400, 300, 10, 10);
         e2.addComponent<SpriteComponent>("FG_BRIGHTPURPLE_BG_BLACK", 10, 0, 10, 10);
+        e2.addComponent<HitboxComponent>(0, 0, 10, 10); // TODO: Fix Hitbox interface
+        e2.addComponent<KeyboardController>();
         e2.addGroup(groupPlayers);
 
         e3.addComponent<TransformComponent>(300, 400, 20, 20);
         e3.addComponent<SpriteComponent>("FG_BRIGHTGREEN_BG_BLACK", TextManager::createSourceRect(127));
+        e3.addComponent<HitboxComponent>(0, 0, 20, 20);
         e3.addGroup(groupPlayers);
 
         e5.addComponent<TransformComponent>(500, 500, 10, 10);
@@ -214,6 +219,11 @@ void Game::update() {
         std::cout << "moved e_copy over\n";
         did_the_thing = true;
     }
+
+    /* Report collisions between e2 and e3 */
+    if (PHYSICS::CollisionAABB(e2.getComponent<HitboxComponent>(), e3.getComponent<HitboxComponent>())) {
+        std::cout << ANSI::TERMINAL::FOREGROUND::BRIGHT_CYAN << "Collision between e2 & e3!\n" << ANSI::TERMINAL::RESET;
+    }
 }
 
 /* Presents the game to an SDL Renderer */
@@ -241,8 +251,8 @@ void Game::clean() {
     SDL_Quit();
 
     /* Free the SDL_Event */
-    delete this->event;
-    this->event = nullptr;
+    delete Game::event;
+    Game::event = nullptr;
 
     /* Free/clear the manager */
     delete Game::manager;

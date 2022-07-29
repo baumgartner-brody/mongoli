@@ -42,7 +42,6 @@ const bool operator==(const HitboxComponent &h1, const HitboxComponent &h2) noex
 
 /* Overwritten copy method */
 void HitboxComponent::copy(Entity &dst, const Entity &old) {
-
     dst.addComponent<HitboxComponent>(old.getComponent<HitboxComponent>());
 }
 

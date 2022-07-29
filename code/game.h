@@ -28,7 +28,7 @@ public:
     /* Cleans all heap resources owned by the Game object */
     void clean();
 
-    SDL_Event *event = nullptr;
+    static SDL_Event *event;
 
     const bool& running() const { return this->_running; }
 
