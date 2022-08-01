@@ -7,8 +7,10 @@
 #include "PHYSICS/Collision.h"
 
 #include "ANSI/ANSI.h"
-#include "GUI/TextManager.h"
+#include "GUI/TEXT/TextManager.h"
 #include "GUI/Menu.h"
+
+#include "GEN/Worldgen.h"
 
 #include <iostream>
 #include <sstream>
@@ -25,28 +27,25 @@ Game::~Game() {
 SDL_Renderer* Game::renderer;
 Manager* Game::manager = new Manager();
 AssetManager* Game::assetManager = new AssetManager();
+Entity* Game::mouse = &(Game::manager->addEntity());
+KeyboardController* Game::keyboard;
 
 /* Initialize the SDL_Event* */
 SDL_Event* Game::event = new SDL_Event(); 
 
+/*
 Entity &e(Game::manager->addEntity());
 Entity *e_copy;
 Entity &e2(Game::manager->addEntity());
 Entity &e3(Game::manager->addEntity());
 Entity &e4(Game::manager->addEntity());
 Entity &e5(Game::manager->addEntity());
-Entity &mouse(Game::manager->addEntity());
+*/
 
-Menu* menu = new Menu(&mouse);
-
-bool did_the_thing = false;
+Menu* menu = new Menu();
 
 /* Sound test 7/22/2022 */
 Mix_Chunk *mix_chunk = nullptr;
-
-enum groupLabel : std::size_t {
-    groupPlayers
-};
 
 /* Creates the game window and inits all necessary objects */
 /*  If successful, the game runs, if not, a warning is printed and the program exits */
@@ -78,15 +77,21 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
         std::cout << "Calling TextManager::init()\n";
         TextManager::init();
 
+        TextManager::TEXT_POSITION_X = 300;
+
+        menu->init();
+
         std::vector<SDL_Color> c_in, c_out;
         c_in.emplace_back(ANSI::SDLCOLOR::BLACK);
         c_in.emplace_back(ANSI::SDLCOLOR::WHITE);
         c_out.emplace_back(ANSI::SDLCOLOR::DARK_RED);
         c_out.emplace_back(ANSI::SDLCOLOR::DARK_BLUE);
 
+        /*
         e.addComponent<TransformComponent>(300, 300, 10, 10);
         e.addComponent<SpriteComponent>(Game::assetManager->getAsset("FG_DARKBLUE_BG_BLACK"), 10, 0, 10, 10);
         e.addGroup(groupPlayers);
+        */
 
         ANSI::terminalTest(std::cout);
 
@@ -96,6 +101,7 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
         SDL_FreeSurface(s);
         Game::assetManager->addAsset("TEST", TextureManager::TextureTools::createTexture(sub));
 
+        /*
         e4.addComponent<TransformComponent>(100, 100, 10, 10);
         SDL_Rect srcR = { 0, 0, 10, 10 };
         e4.addComponent<SpriteComponent>("TEST", srcR);
@@ -108,21 +114,31 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
         e2.addComponent<HitboxComponent>(0, 0, 10, 10); // TODO: Fix Hitbox interface
         e2.addComponent<KeyboardController>();
         e2.addGroup(groupPlayers);
+        */
 
+        /* Set the Game's universal keyboardcontroller* to the player's keyboard */
+        //Game::keyboard = &e2.getComponent<KeyboardController>();
+
+        /*
         e3.addComponent<TransformComponent>(300, 400, 20, 20);
         e3.addComponent<SpriteComponent>("FG_BRIGHTGREEN_BG_BLACK", TextManager::createSourceRect(127));
         e3.addComponent<HitboxComponent>(0, 0, 20, 20);
         e3.addGroup(groupPlayers);
+        */
 
+        /*
         e5.addComponent<TransformComponent>(500, 500, 10, 10);
         e5.addComponent<SpriteComponent>("FG_BRIGHTRED_BG_BLACK", 0, 0, 10, 10);
         e5.getComponent<SpriteComponent>().addAnimation(0, 4, 1000, 40);
         e5.getComponent<SpriteComponent>().play(0);
         e5.addGroup(groupPlayers);
+        */
 
-        mouse.addComponent<HitboxComponent>(0, 0, 10, 10);
-        mouse.addComponent<MouseComponent>();
-        mouse.addGroup(groupPlayers);
+       WorldGen::test();
+
+        mouse->addComponent<HitboxComponent>(0, 0, 10, 10);
+        mouse->addComponent<MouseComponent>();
+        //mouse.addGroup(groupPlayers);
 
         /* Initialize the sound mixer */
         if (Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1) {
@@ -137,6 +153,8 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
             std::cerr << "Error: \"" << SDL_GetError() << "\"\n";
             exit(-1);
         }
+
+        //TextManager::addText("FG_BRIGHTRED_BG_BLACK", "Hello");
 
         /* Tell the game it is safe to update */
         this->_running = true;
@@ -225,24 +243,8 @@ void Game::update() {
 
     menu->update();
 
-    if (SDL_GetTicks() >= 6000 && !did_the_thing) {
-        e_copy->getComponent<TransformComponent>().xpos = 200;
-        std::cout << "moved e_copy over\n";
-        did_the_thing = true;
-    }
-
-    /* Report collisions between e2 and e3 */
-    if (PHYSICS::CollisionAABB(e2.getComponent<HitboxComponent>(), e3.getComponent<HitboxComponent>())) {
-        std::cout << ANSI::TERMINAL::FOREGROUND::BRIGHT_CYAN << "Collision between e2 & e3!\n" << ANSI::TERMINAL::RESET;
-    }
-
-    /* Report collisions between mouse and e3 */
-    if (PHYSICS::CollisionAABB(mouse.getComponent<HitboxComponent>(), e3.getComponent<HitboxComponent>())) {
-        std::cout << ANSI::TERMINAL::FOREGROUND::BRIGHT_RED << "Collision between mouse & e3!\n" << ANSI::TERMINAL::RESET;
-    }
-
     std::stringstream ss;
-    ss << "X: " << mouse.getComponent<HitboxComponent>()._r.x << " Y: " << mouse.getComponent<HitboxComponent>()._r.y;
+    ss << "X: " << mouse->getComponent<HitboxComponent>()._r.x << " Y: " << mouse->getComponent<HitboxComponent>()._r.y;
 
     SDL_SetWindowTitle(Game::window, ss.str().c_str());
 }
@@ -281,9 +283,16 @@ void Game::clean() {
     delete Game::manager;
     Game::manager = nullptr;
 
+    /* Free the mouse + keyboard (done automatically by the manager) */
+    Game::mouse = nullptr;
+    Game::keyboard = nullptr;
+
     /* Free/clear the assetmanager */
     delete Game::assetManager;
     Game::assetManager = nullptr;
+
+    TextManager::freeKeyboardEntry->clear();
+    delete TextManager::freeKeyboardEntry;
 
     delete menu;
     menu = nullptr;

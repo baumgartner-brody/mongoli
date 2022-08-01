@@ -93,6 +93,11 @@ void SpriteComponent::addAnimation(const uint8_t &index, const uint8_t &num_fram
     }
 }
 
+/* Swap this Sprite's asset* with a new one */
+void SpriteComponent::swapAsset(const std::string &assetName) {
+    this->_asset = Game::assetManager->getAsset(assetName);
+}
+
 /* Operator== for SpriteComponents will only check if the _assets and _transforms point to the */
 /*  same place. */
 const bool operator==(const SpriteComponent &s1, const SpriteComponent &s2) noexcept {

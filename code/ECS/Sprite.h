@@ -41,6 +41,16 @@ public:
 
     void addAnimation(const uint8_t &index, const uint8_t &num_frames, const unsigned int &speed, const unsigned int &y);
 
+    /* Swap this Sprite's asset* with a new one */
+    void swapAsset(const std::string &assetName);
+
+    /* Adjust this Sprite's srcRect */
+    void moveSrcR(const int &xpos, const int &ypos) noexcept { this->srcR.x = xpos; this->srcR.y = ypos; }
+    void adjustSrcR(const int &xpos, const int &ypos, const unsigned int &w, const unsigned int &h) noexcept {
+        this->srcR.x = xpos; this->srcR.y = ypos;
+        this->srcR.w = w; this->srcR.h = h;
+    }
+
     /* Equality operators */
     friend const bool operator==(const SpriteComponent &s1, const SpriteComponent &s2) noexcept;
     friend const bool operator!=(const SpriteComponent &s1, const SpriteComponent &s2) noexcept;

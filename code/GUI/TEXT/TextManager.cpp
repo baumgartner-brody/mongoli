@@ -1,6 +1,10 @@
 #include "TextManager.h"
 
-#include "../ECS/Components.h"
+#include "../../ECS/Components.h"
+
+int TextManager::TEXT_POSITION_X;
+int TextManager::TEXT_POSITION_Y;
+std::string *TextManager::freeKeyboardEntry = new std::string;
 
 /* Initializes all text-assets */
 void TextManager::init() {
@@ -102,4 +106,75 @@ SDL_Rect TextManager::createSourceRect(const Uint8 &c) {
     }
 
     return r;
+}
+
+/* Adds text at the current TextManager position with the desired asset name */
+/* The resultant letter entities are returned */
+std::vector<Entity*> TextManager::addText(int x, int y, const std::string &assetName, const std::string &text) {
+
+    /* The vector to return */
+    std::vector<Entity*> v;
+
+    int _TEXT_POSITION_X_TMP_ = x;
+    int _TEXT_POSITION_Y_TMP_ = y;
+    
+    /* Add a letter entity for each desired letter */
+    for (auto & l : text) {
+
+        if (l == '\r') {
+            x = _TEXT_POSITION_X_TMP_;
+            continue;
+        } else if (l == '\n') {
+            x = _TEXT_POSITION_X_TMP_;
+            y += 10;
+            continue;
+        } else if (l == ' ') {
+            x += 10;
+            continue;
+        }
+
+        Entity *e = &Game::manager->addEntity();
+        e->addComponent<TransformComponent>(x, y, 10, 10);
+        e->addComponent<SpriteComponent>(assetName, TextManager::createSourceRect(l));
+        e->addGroup(0u);
+        v.emplace_back(e);
+
+        /* Move the next letter's position */
+        x += 10;
+    }
+
+    return v;
+}
+
+/* Given a vector of letter entities, iterate thru and recolor them. */
+void TextManager::recolorText(std::vector<Entity*> &text_to_recolor, const std::string &newColorAssetName) {
+    for (auto & e : text_to_recolor)
+        e->getComponent<SpriteComponent>().swapAsset(newColorAssetName);
+}
+
+/* Generates a random foreground color to go with the provided background color */
+const std::string TextManager::generateRandomTextColor(const std::string &BG_COLOR) {
+
+    int r;
+
+    do {
+        r = std::rand() % 16;
+    } while (ANSI::SDLCOLOR_LOOKUP::NAME[r] == BG_COLOR);
+    
+    std::string s = "FG_" + ANSI::SDLCOLOR_LOOKUP::NAME[r] + "_BG_" + BG_COLOR;
+
+    return s;
+}
+
+/* Allows the user to type until an [ENTER] key is detected */
+const bool TextManager::freeKeyboardEnter(int x, int y, const std::string &assetName) {
+
+    if (Game::event->type == SDL_KEYDOWN && !Game::event->key.repeat) {
+        if (Game::event->key.keysym.sym == SDLK_RETURN || Game::event->key.keysym.sym == SDLK_RETURN2) {
+            return true;
+        } 
+    }
+
+    return false;
+
 }

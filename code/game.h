@@ -5,8 +5,14 @@
 #include "SDL2/SDL_mixer.h"
 #include <string>
 
-class Manager;
 class AssetManager;
+class Entity;
+class KeyboardController;
+class Manager;
+
+enum groupLabels : std::size_t {
+    groupPlayers
+};
 
 class Game {
 public:
@@ -37,6 +43,9 @@ public:
 
     static Manager *manager;
     static AssetManager *assetManager;
+
+    static Entity *mouse;
+    static KeyboardController *keyboard;
 
 private:
 
