@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     /* The amount of time the current frame took in ms */
     unsigned int FRAME_TIME;
 
-    while (game->running()) {
+    while (Game::_running) {
 
         /* Get elapsed ms from the beginning of SDL_Init */
         FRAME_START = SDL_GetTicks();

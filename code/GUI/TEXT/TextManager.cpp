@@ -5,6 +5,8 @@
 int TextManager::TEXT_POSITION_X;
 int TextManager::TEXT_POSITION_Y;
 std::string *TextManager::freeKeyboardEntry = new std::string;
+std::vector<Entity*> *TextManager::freeKeyboardDisplayText = new std::vector<Entity*>;
+bool *TextManager::CAPS = new bool(false);
 
 /* Initializes all text-assets */
 void TextManager::init() {
@@ -36,6 +38,14 @@ void TextManager::init() {
 
         }
     }
+}
+
+/* Frees all associated memory */
+void TextManager::free() {
+    TextManager::freeKeyboardEntry->clear();
+    TextManager::freeKeyboardDisplayText->clear();
+    delete TextManager::freeKeyboardDisplayText;
+    delete TextManager::freeKeyboardEntry;
 }
 
 /* Creates the appropriate SDL_Rect for an 8-bit char int */
@@ -169,10 +179,41 @@ const std::string TextManager::generateRandomTextColor(const std::string &BG_COL
 /* Allows the user to type until an [ENTER] key is detected */
 const bool TextManager::freeKeyboardEnter(int x, int y, const std::string &assetName) {
 
+    int t = SDL_GetModState();
+    if ((t & KMOD_CAPS) == KMOD_CAPS) {
+        *TextManager::CAPS = true;
+    } else {
+        *TextManager::CAPS = false;
+    }
+
     if (Game::event->type == SDL_KEYDOWN && !Game::event->key.repeat) {
         if (Game::event->key.keysym.sym == SDLK_RETURN || Game::event->key.keysym.sym == SDLK_RETURN2) {
             return true;
-        } 
+        } else if (Game::event->key.keysym.sym >= 'a' && Game::event->key.keysym.sym <= 'z') {
+            if (*TextManager::CAPS) {
+                *TextManager::freeKeyboardEntry += static_cast<char>(Game::event->key.keysym.sym - 32);
+            } else {
+                *TextManager::freeKeyboardEntry += static_cast<char>(Game::event->key.keysym.sym);
+            }
+            for (auto & e : *TextManager::freeKeyboardDisplayText) e->destroy();
+            TextManager::freeKeyboardDisplayText->clear();
+            *TextManager::freeKeyboardDisplayText = TextManager::addText(x, y, assetName, *TextManager::freeKeyboardEntry);
+        } else if (Game::event->key.keysym.sym == SDLK_BACKSPACE && !TextManager::freeKeyboardEntry->empty()) {
+            TextManager::freeKeyboardEntry->pop_back();
+            for (auto & e : *TextManager::freeKeyboardDisplayText) e->destroy();
+            TextManager::freeKeyboardDisplayText->clear();
+            *TextManager::freeKeyboardDisplayText = TextManager::addText(x, y, assetName, *TextManager::freeKeyboardEntry);
+        } else if (Game::event->key.keysym.sym == SDLK_LSHIFT || Game::event->key.keysym.sym == SDLK_RSHIFT || Game::event->key.keysym.sym == SDLK_CAPSLOCK) {
+            std::cout << "Triggered shift event\n";
+            *TextManager::CAPS = !(*TextManager::CAPS);
+        } else if (Game::event->key.keysym.sym == SDLK_SPACE) {
+            *TextManager::freeKeyboardEntry += ' ';
+        }
+    } else if (Game::event->type == SDL_KEYUP) {
+        if (Game::event->key.keysym.sym == SDLK_LSHIFT || Game::event->key.keysym.sym == SDLK_RSHIFT) {
+            std::cout << "SHIFT WAS RELEASED\n";
+            *TextManager::CAPS = !(*TextManager::CAPS);
+        }
     }
 
     return false;

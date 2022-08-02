@@ -29,6 +29,7 @@ Manager* Game::manager = new Manager();
 AssetManager* Game::assetManager = new AssetManager();
 Entity* Game::mouse = &(Game::manager->addEntity());
 KeyboardController* Game::keyboard;
+bool Game::_running = false;
 
 /* Initialize the SDL_Event* */
 SDL_Event* Game::event = new SDL_Event(); 
@@ -291,8 +292,7 @@ void Game::clean() {
     delete Game::assetManager;
     Game::assetManager = nullptr;
 
-    TextManager::freeKeyboardEntry->clear();
-    delete TextManager::freeKeyboardEntry;
+    TextManager::free();
 
     delete menu;
     menu = nullptr;

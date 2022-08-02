@@ -21,6 +21,9 @@ namespace TextManager {
     /* Initializes all text-related assets */
     void init();
 
+    /* Frees all associated memory */
+    void free();
+
     /* Creates the appropriate SDL_Rect for an 8-bit char unsigned int */
     SDL_Rect createSourceRect(const Uint8 &c);
 
@@ -41,6 +44,9 @@ namespace TextManager {
     extern int TEXT_POSITION_Y;
 
     extern std::string *freeKeyboardEntry;
+    extern std::vector<Entity*> *freeKeyboardDisplayText;
+
+    extern bool *CAPS;
 };
 
 #endif /* _TEXT_MANAGER_H_ */

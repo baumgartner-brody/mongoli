@@ -47,11 +47,12 @@ public:
     static Entity *mouse;
     static KeyboardController *keyboard;
 
+    static bool _running;
+
 private:
 
     SDL_Window *window = nullptr;
 
-    bool _running = false;
 };
 
 #endif /* _GAME_H_ */

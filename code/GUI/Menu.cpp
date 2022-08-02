@@ -24,15 +24,20 @@ void Menu::init() {
 
 void Menu::update() {
 
+    static bool _e = false;
+
     /* automatically triggers next typing event upon [ENTER] */
     if (this->_entering_world_name && TextManager::freeKeyboardEnter(360, 330, "FG_WHITE_BG_BLACK")) {
         this->_entering_world_name = false;
         this->_generateOptions();
         for (auto & e : this->_enter_world_name) e->destroy();
         this->_enter_world_name.clear();
+        _e = true;
+    } else {
+        _e = false;
     }
 
-    if (Game::event->type == SDL_KEYDOWN && !Game::event->key.repeat) {
+    if (Game::event->type == SDL_KEYDOWN && !Game::event->key.repeat && !_e) {
         if (Game::event->key.keysym.sym == SDLK_DOWN) {
             if (this->_selected_option == 0) {
                 this->_selected_option = 1;
@@ -64,6 +69,10 @@ void Menu::update() {
         } else if (Game::event->key.keysym.sym == SDLK_RETURN || Game::event->key.keysym.sym == SDLK_RETURN2) {
             if (this->_selected_option == 0) {
                 this->beginEnteringWorldName();
+            } else if (this->_selected_option == 1) {
+                std::cout << "lol\n";
+            } else if (this->_selected_option == 2) {
+                Game::_running = false;
             }
         }
     }
