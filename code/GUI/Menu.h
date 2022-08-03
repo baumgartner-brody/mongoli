@@ -45,6 +45,8 @@ private:
 
     void _clearOptions() noexcept;
 
+    void _TESTFUNCTION_DRAW_INN_ROOM1() noexcept;
+
 };
 
 #endif /* _MENU_H_ */

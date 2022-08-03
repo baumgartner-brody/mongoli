@@ -143,17 +143,22 @@ std::vector<Entity*> TextManager::addText(int x, int y, const std::string &asset
             continue;
         }
 
-        Entity *e = &Game::manager->addEntity();
-        e->addComponent<TransformComponent>(x, y, 10, 10);
-        e->addComponent<SpriteComponent>(assetName, TextManager::createSourceRect(l));
-        e->addGroup(0u);
-        v.emplace_back(e);
+        v.emplace_back(TextManager::addText(x, y, assetName, static_cast<Uint8>(l)));
 
         /* Move the next letter's position */
         x += 10;
     }
 
     return v;
+}
+
+/* Adds a singular character entity at the desired location */
+Entity* TextManager::addText(int x, int y, const std::string &assetName, const Uint8 &c) {
+    Entity *e = &Game::manager->addEntity();
+    e->addComponent<TransformComponent>(x, y, 10, 10);
+    e->addComponent<SpriteComponent>(assetName, TextManager::createSourceRect(c));
+    e->addGroup(0u);
+    return e;
 }
 
 /* Given a vector of letter entities, iterate thru and recolor them. */
@@ -176,15 +181,17 @@ const std::string TextManager::generateRandomTextColor(const std::string &BG_COL
     return s;
 }
 
-/* Allows the user to type until an [ENTER] key is detected */
-const bool TextManager::freeKeyboardEnter(int x, int y, const std::string &assetName) {
-
+void TextManager::getCAPSState() {
     int t = SDL_GetModState();
     if ((t & KMOD_CAPS) == KMOD_CAPS) {
         *TextManager::CAPS = true;
     } else {
         *TextManager::CAPS = false;
     }
+}
+
+/* Allows the user to type until an [ENTER] key is detected */
+const bool TextManager::freeKeyboardEnter(int x, int y, const std::string &assetName) {    
 
     if (Game::event->type == SDL_KEYDOWN && !Game::event->key.repeat) {
         if (Game::event->key.keysym.sym == SDLK_RETURN || Game::event->key.keysym.sym == SDLK_RETURN2) {
@@ -218,4 +225,10 @@ const bool TextManager::freeKeyboardEnter(int x, int y, const std::string &asset
 
     return false;
 
+}
+
+/* Destroys all current entities in the free keyboard display text */
+void TextManager::destroyFreeKeyboardEntry() {
+    for (auto & e : *TextManager::freeKeyboardDisplayText) e->destroy();
+    TextManager::freeKeyboardDisplayText->clear();
 }

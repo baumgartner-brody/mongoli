@@ -11,9 +11,10 @@
 #include "GUI/Menu.h"
 
 #include "GEN/Worldgen.h"
+#include "GEN/Map.h"
 
 #include <iostream>
-#include <sstream>
+#include <sstream> // mouse position = window title 
 
 Game::Game() {
 
@@ -33,6 +34,7 @@ bool Game::_running = false;
 
 /* Initialize the SDL_Event* */
 SDL_Event* Game::event = new SDL_Event(); 
+SDL_Thread *mapThread;
 
 /*
 Entity &e(Game::manager->addEntity());
@@ -164,6 +166,9 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
         std::cerr << "Could not initialize SDL\n";
         exit(-1);
     }
+
+    //mapThread = SDL_CreateThread(Map::updateMapThreadFunction, "MapThread", (void*)NULL);
+    //SDL_DetachThread(mapThread);
 }
 
 void Game::handleEvents() {

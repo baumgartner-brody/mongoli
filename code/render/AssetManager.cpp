@@ -1,5 +1,7 @@
 #include "AssetManager.h"
 
+#include <iostream>
+
 /* Assets require a Texture* to be created */
 Asset::Asset(SDL_Texture *t) {
     this->_texture = t;
@@ -42,6 +44,10 @@ AssetManager::AssetManager() {
 AssetManager::~AssetManager() { this->clear(); }
 
 Asset* AssetManager::getAsset(const std::string &assetName) {
+    if (this->assets.find(assetName) == std::end(this->assets)) {
+        std::cerr << "No asset named \"" << assetName << "\" exists!\n";
+        exit(-1);
+    }
     return this->assets[assetName];
 }
 

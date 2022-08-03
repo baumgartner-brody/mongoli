@@ -31,14 +31,24 @@ namespace TextManager {
     /* The resultant letter entities are returned */
     std::vector<Entity*> addText(int x, int y, const std::string &assetName, const std::string &text);
 
+    /* Adds a singular character entity at the desired location */
+    Entity* addText(int x, int y, const std::string &assetName, const Uint8 &c);
+
     /* Given a vector of letter entities, iterate thru and recolor them. */
     void recolorText(std::vector<Entity*> &text_to_recolor, const std::string &newColorAssetName);
 
     /* Generates a random foreground color to go with the provided background color */
     const std::string generateRandomTextColor(const std::string &BG_COLOR);
 
+    /* Sets the CAPS bool to the current state of CAPSLOCK */
+    /* This should be called once before every attempt to get text from the player */
+    void getCAPSState();
+
     /* Allows the user to type until an [ENTER] key is detected */
     const bool freeKeyboardEnter(int x, int y, const std::string &assetName);
+
+    /* Destroys all current entities in the free keyboard display text */
+    void destroyFreeKeyboardEntry();
 
     extern int TEXT_POSITION_X;
     extern int TEXT_POSITION_Y;
