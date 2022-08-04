@@ -2,6 +2,7 @@
 
 #include "../../ECS/Components.h"
 
+/* Declarations for all static and extern members of TextManager */
 int TextManager::TEXT_POSITION_X;
 int TextManager::TEXT_POSITION_Y;
 std::string *TextManager::freeKeyboardEntry = new std::string;
@@ -23,7 +24,7 @@ void TextManager::init() {
             if (*fg_itr == *bg_itr) continue;
 
             /* Build the name of this asset */
-            std::string assetName = "FG_" + fg_itr.getColorName() + "_BG_" + bg_itr.getColorName();
+            std::string assetName = "FG_" + fg_itr.getColorName() + "_BG_" + bg_itr.getColorName();            
 
             /* Build the c_out vector */
             std::vector<SDL_Color> c_out;

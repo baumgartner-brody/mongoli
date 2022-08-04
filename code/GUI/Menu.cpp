@@ -12,9 +12,7 @@ Menu::Menu() {
 
 Menu::~Menu() {
     this->e_entities.clear();
-    this->_new_game.clear();
-    this->_load_game.clear();
-    this->_exit_game.clear();
+    this->_clearOptions();
     this->_enter_world_name.clear();
 }
 
@@ -49,30 +47,42 @@ void Menu::update() {
         if (Game::event->key.keysym.sym == SDLK_DOWN) {
             if (this->_selected_option == 0) {
                 this->_selected_option = 1;
-                TextManager::recolorText(this->_new_game, "FG_WHITE_BG_BLACK");
-                TextManager::recolorText(this->_load_game, "FG_BRIGHTGREEN_BG_BLACK");
+                //TextManager::recolorText(this->_new_game, "FG_WHITE_BG_BLACK");
+                //TextManager::recolorText(this->_load_game, "FG_BRIGHTGREEN_BG_BLACK");
+                this->_new_game->recolor("FG_WHITE_BG_BLACK");
+                this->_load_game->recolor("FG_BRIGHTGREEN_BG_BLACK");
             } else if (this->_selected_option == 1) {
                 this->_selected_option = 2;
-                TextManager::recolorText(this->_load_game, "FG_WHITE_BG_BLACK");
-                TextManager::recolorText(this->_exit_game, "FG_BRIGHTGREEN_BG_BLACK");
+                //TextManager::recolorText(this->_load_game, "FG_WHITE_BG_BLACK");
+                //TextManager::recolorText(this->_exit_game, "FG_BRIGHTGREEN_BG_BLACK");
+                this->_load_game->recolor("FG_WHITE_BG_BLACK");
+                this->_exit_game->recolor("FG_BRIGHTGREEN_BG_BLACK");
             } else if (this->_selected_option == 2) {
                 this->_selected_option = 0;
-                TextManager::recolorText(this->_exit_game, "FG_WHITE_BG_BLACK");
-                TextManager::recolorText(this->_new_game, "FG_BRIGHTGREEN_BG_BLACK");
+                //TextManager::recolorText(this->_exit_game, "FG_WHITE_BG_BLACK");
+                //TextManager::recolorText(this->_new_game, "FG_BRIGHTGREEN_BG_BLACK");
+                this->_exit_game->recolor("FG_WHITE_BG_BLACK");
+                this->_new_game->recolor("FG_BRIGHTGREEN_BG_BLACK");
             }
         } else if (Game::event->key.keysym.sym == SDLK_UP) {
             if (this->_selected_option == 0) {
                 this->_selected_option = 2;
-                TextManager::recolorText(this->_new_game, "FG_WHITE_BG_BLACK");
-                TextManager::recolorText(this->_exit_game, "FG_BRIGHTGREEN_BG_BLACK");
+                //TextManager::recolorText(this->_new_game, "FG_WHITE_BG_BLACK");
+                //TextManager::recolorText(this->_exit_game, "FG_BRIGHTGREEN_BG_BLACK");
+                this->_new_game->recolor("FG_WHITE_BG_BLACK");
+                this->_exit_game->recolor("FG_BRIGHTGREEN_BG_BLACK");
             } else if (this->_selected_option == 1) {
                 this->_selected_option = 0;
-                TextManager::recolorText(this->_load_game, "FG_WHITE_BG_BLACK");
-                TextManager::recolorText(this->_new_game, "FG_BRIGHTGREEN_BG_BLACK");
+                //TextManager::recolorText(this->_load_game, "FG_WHITE_BG_BLACK");
+                //TextManager::recolorText(this->_new_game, "FG_BRIGHTGREEN_BG_BLACK");
+                this->_load_game->recolor("FG_WHITE_BG_BLACK");
+                this->_new_game->recolor("FG_BRIGHTGREEN_BG_BLACK");
             } else if (this->_selected_option == 2) {
                 this->_selected_option = 1;
-                TextManager::recolorText(this->_exit_game, "FG_WHITE_BG_BLACK");
-                TextManager::recolorText(this->_load_game, "FG_BRIGHTGREEN_BG_BLACK");
+                //TextManager::recolorText(this->_exit_game, "FG_WHITE_BG_BLACK");
+                //TextManager::recolorText(this->_load_game, "FG_BRIGHTGREEN_BG_BLACK");
+                this->_exit_game->recolor("FG_WHITE_BG_BLACK");
+                this->_load_game->recolor("FG_BRIGHTGREEN_BG_BLACK");
             }
         } else if (Game::event->key.keysym.sym == SDLK_RETURN || Game::event->key.keysym.sym == SDLK_RETURN2) {
             if (this->_selected_option == 0) {
@@ -107,14 +117,7 @@ void Menu::close() {
     for (auto & e : e_entities) e->destroy();
     e_entities.clear();
 
-    for (auto & e : this->_new_game) e->destroy();
-    this->_new_game.clear();
-
-    for (auto & e : this->_load_game) e->destroy();
-    this->_load_game.clear();
-
-    for (auto & e : this->_exit_game) e->destroy();
-    this->_exit_game.clear();
+    this->_clearOptions();
 }
 
 void Menu::_generateE() noexcept {
@@ -197,17 +200,17 @@ void Menu::_generateOptions() noexcept {
     int x = 360;
     int y = 320;
 
-    this->_new_game = TextManager::addText(x, y, "FG_BRIGHTGREEN_BG_BLACK", "New game");
+    this->_new_game = new EntityString(x, y, "FG_BRIGHTGREEN_BG_BLACK", "New game");
     
     x = 355;
     y += 10;
 
-    this->_load_game = TextManager::addText(x, y, "FG_WHITE_BG_BLACK", "Load game");
+    this->_load_game = new EntityString(x, y, "FG_WHITE_BG_BLACK", "Load game");
 
     x = 380;
     y += 10;
 
-    this->_exit_game = TextManager::addText(x, y, "FG_WHITE_BG_BLACK", "Exit");
+    this->_exit_game = new EntityString(x, y, "FG_WHITE_BG_BLACK", "Exit");
 
     this->_selected_option = 0;
 
@@ -215,12 +218,10 @@ void Menu::_generateOptions() noexcept {
 
 void Menu::_clearOptions() noexcept {
 
-    for (auto & e : _new_game) e->destroy();
-    for (auto & e : _load_game) e->destroy();
-    for (auto & e : _exit_game) e->destroy();
-    this->_new_game.clear();
-    this->_load_game.clear();
-    this->_exit_game.clear();
+    delete this->_new_game;
+    delete this->_load_game;
+    delete this->_exit_game;
+    this->_new_game = this->_load_game = this->_exit_game = nullptr;
 }
 
 void Menu::_TESTFUNCTION_DRAW_INN_ROOM1() noexcept {
@@ -230,15 +231,15 @@ void Menu::_TESTFUNCTION_DRAW_INN_ROOM1() noexcept {
     int x = 500;
     int y = 500;
 
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(201));
+    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(ANSI::CHARACTERS::BOX_DRAWING_CORNER_TOP_LEFT_DOUBLE));
     x += 10;
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(205));
+    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(ANSI::CHARACTERS::BOX_DRAWING_HORIZONTAL_DOUBLE));
     x += 10;
     TextManager::addText(x, y, "FG_BLACK_BG_DARKYELLOW", Uint8(186));
     x += 10;
     TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(205));
     x += 10;
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(187));
+    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(ANSI::CHARACTERS::BOX_DRAWING_CORNER_TOP_RIGHT_DOUBLE));
 
     y += 10;
     x = 500;

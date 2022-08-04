@@ -3,7 +3,7 @@
 
 #include "SDL2/SDL.h"
 
-#include <vector>
+#include "TEXT/EntityString.h"
 
 class Entity;
 class HitboxComponent;
@@ -29,9 +29,9 @@ private:
     /* All of the entities that encompass the E */
     std::vector<Entity*> e_entities; 
 
-    std::vector<Entity*> _new_game;
-    std::vector<Entity*> _load_game;
-    std::vector<Entity*> _exit_game;
+    EntityString *_new_game = nullptr;
+    EntityString *_load_game = nullptr;
+    EntityString *_exit_game = nullptr;
 
     std::vector<Entity*> _enter_world_name;
 

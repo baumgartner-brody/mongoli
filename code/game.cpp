@@ -167,8 +167,8 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
         exit(-1);
     }
 
-    //mapThread = SDL_CreateThread(Map::updateMapThreadFunction, "MapThread", (void*)NULL);
-    //SDL_DetachThread(mapThread);
+    mapThread = SDL_CreateThread(Map::updateMapThreadFunction, "MapThread", (void*)NULL);
+    SDL_DetachThread(mapThread);
 }
 
 void Game::handleEvents() {
@@ -262,6 +262,8 @@ void Game::render() {
 
     SDL_RenderClear(Game::renderer);
 
+    Map::render();
+
     for (auto & p : players) p->draw();
 
     menu->draw();
@@ -285,6 +287,10 @@ void Game::clean() {
     delete Game::event;
     Game::event = nullptr;
 
+    /* Free the menu */
+    delete menu;
+    menu = nullptr;
+
     /* Free/clear the manager */
     delete Game::manager;
     Game::manager = nullptr;
@@ -298,9 +304,6 @@ void Game::clean() {
     Game::assetManager = nullptr;
 
     TextManager::free();
-
-    delete menu;
-    menu = nullptr;
 
     /* Free sound */
     Mix_FreeChunk(mix_chunk);
