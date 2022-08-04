@@ -243,7 +243,7 @@ void Menu::_TESTFUNCTION_DRAW_INN_ROOM1() noexcept {
     y += 10;
     x = 500;
 
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(186));
+    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(ANSI::CHARACTERS::TILDE));
     x += 10;
     TextManager::addText(x, y, "FG_DARKGREY_BG_BLACK", Uint8('+'));
     x += 10;
@@ -251,8 +251,8 @@ void Menu::_TESTFUNCTION_DRAW_INN_ROOM1() noexcept {
     x += 10;
     TextManager::addText(x, y, "FG_DARKGREY_BG_BLACK", Uint8('+'));
     x += 10;
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(186));
-
+    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(ANSI::CHARACTERS::SOLID));
+    
     y += 10;
     x = 500;
 

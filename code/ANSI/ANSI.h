@@ -166,6 +166,266 @@ namespace ANSI {
     /* A function to replicate the iconic "win10colors.cmd" */
     void terminalTest(std::ostream &out);
 
+    /* The names of all extended ascii characters */
+    enum CHARACTERS : Uint8 {
+        BLANK_SPACE = 0u, // ' ' (0) (NUL)
+        SMILEY, // ☺
+        SMILEY_FILLED_IN, // ☻
+        HEART, // ♥
+        DIAMOND, // ♦
+        CLUB, // ♣
+        SPADE, // ♠
+        BULLET_POINT, // •
+        BULLET_POINT_INVERSE, // ◘
+        CIRCLE, // ○
+        CIRCLE_INVERSE, // ◙
+        MALE_SIGN, // ♂
+        FEMALE_SIGN, // ♀
+        MUSIC_NOTE_SINGLE, // ♪
+        MUSIC_NOTE_DOUBLE, // ♫
+        SUN, // ☼
+        RIGHT_POINTER, // ►
+        LEFT_POINTER, // ◄
+        EXCLAMATION_POINT_DOUBLE, // ‼
+        ARROW_UPDOWN, // ↕
+        PARAGRAPH, // ¶
+        SECTION_SIGN, // §
+        RECTANGLE, // ▬
+        ARROW_UPDOWN_UNDERLINED, // ↨
+        ARROW_UP, // ↑
+        ARROW_DOWN, // ↓
+        ARROW_RIGHT, // →
+        ARROW_LEFT, // ←
+        RIGHT_ANGLE, // ∟ (WILTED PLANT)
+        ARROW_LEFTRIGHT, // ↔
+        SLOPE_UPWARD, // ▲
+        SLOPE_DOWNWARD, // ▼
+        BLANK_SPACE2, // ' ' (32)
+        EXCLAMATION_POINT_SINGLE, // !
+        QUOTE_DOUBLE, // "
+        HASHTAG, // #
+        DOLLAR_SIGN, // $
+        PERCENT_SIGN, // %
+        AMPERSAND, // &
+        QUOTE_SINGLE, // ' (APOSTROPHE)
+        OPEN_PARENTHESIS, // (
+        CLOSE_PARENTHESIS, // )
+        ASTERISK, // *
+        PLUS_SIGN, // +
+        COMMA, // ,
+        MINUS_SIGN, // -
+        PERIOD, // .
+        FOREWARD_SLASH, // /
+        ZERO, // 0
+        ONE, // 1
+        TWO, // 2
+        THREE, // 3
+        FOUR, // 4
+        FIVE, // 5
+        SIX, // 6
+        SEVEN, // 7
+        EIGHT, // 8
+        NINE, // 9
+        COLON, // :
+        SEMICOLON, // ;
+        LESS_THAN, // <
+        EQUAL, // =
+        MORE_THAN, // >
+        QUESTION_MARK, // ?
+        AT_SIGN, // @
+        CAPITAL_A, // A
+        CAPITAL_B, // B
+        CAPITAL_C, // C
+        CAPITAL_D, // D
+        CAPITAL_E, // E
+        CAPITAL_F, // F
+        CAPITAL_G, // G
+        CAPITAL_H, // H
+        CAPITAL_I, // I
+        CAPITAL_J, // J
+        CAPITAL_K, // K
+        CAPITAL_L, // L
+        CAPITAL_M, // M
+        CAPITAL_N, // N
+        CAPITAL_O, // O
+        CAPITAL_P, // P
+        CAPITAL_Q, // Q
+        CAPITAL_R, // R
+        CAPITAL_S, // S
+        CAPITAL_T, // T
+        CAPITAL_U, // U
+        CAPITAL_V, // V
+        CAPITAL_W, // W
+        CAPITAL_X, // X
+        CAPITAL_Y, // Y
+        CAPITAL_Z, // Z
+        OPEN_SQUARE_BRACKET, // [
+        BACKSLASH, /* \ */
+        CLOSE_SQUARE_BRACKET, // ]
+        CARET, // ^
+        UNDERLINE, // _
+        BACKTICK, // `
+        LOWERCASE_A, // a
+        LOWERCASE_B, // b
+        LOWERCASE_C, // c
+        LOWERCASE_D, // d
+        LOWERCASE_E, // e
+        LOWERCASE_F, // f
+        LOWERCASE_G, // g
+        LOWERCASE_H, // h
+        LOWERCASE_I, // i
+        LOWERCASE_J, // j
+        LOWERCASE_K, // k
+        LOWERCASE_L, // l
+        LOWERCASE_M, // m
+        LOWERCASE_N, // n
+        LOWERCASE_O, // o
+        LOWERCASE_P, // p
+        LOWERCASE_Q, // q
+        LOWERCASE_R, // r
+        LOWERCASE_S, // s
+        LOWERCASE_T, // t
+        LOWERCASE_U, // u
+        LOWERCASE_V, // v
+        LOWERCASE_W, // w
+        LOWERCASE_X, // x
+        LOWERCASE_Y, // y
+        LOWERCASE_Z, // z
+        OPEN_CURLY_BRACE, // {
+        VERTICAL_PIPE, // |
+        CLOSE_CURLY_BRACE, // }
+        TILDE, // ~
+        GREEK_DELTA_CAPITAL, // ⌂
+        CEDILLA_CAPITAL, // Ç (C WITH TAIL)
+        U_WITH_DOTS_LOWERCASE, // ü
+        E_WITH_RIGHT_ACCENT_LOWERCASE, // é
+        A_WITH_HAT_LOWERCASE, // â
+        A_WITH_DOTS_LOWERCASE, // ä
+        A_WITH_LEFT_ACCENT_LOWERCASE, // à
+        ANGSTROM_LOWERCASE, // å
+        CEDILLA_LOWERCASE, // ç (C WITH TAIL)
+        E_WITH_HAT_LOWERCASE, // ê
+        E_WITH_DOTS_LOWERCASE, // ë
+        E_WITH_LEFT_ACCENT, // è
+        I_WITH_DOTS_LOWERCASE, // ï
+        I_WITH_HAT_LOWERCASE, // î
+        I_WITH_LEFT_ACCENT, // ì
+        A_WITH_DOTS_CAPITAL, // Ä
+        ANGSTROM_CAPITAL, // Å
+        E_WITH_RIGHT_ACCENT_CAPITAL, // É
+        AE_LOWERCASE, // æ 
+        AE_CAPITAL, // Æ
+        O_WITH_HAT_LOWERCASE, // ô
+        O_WITH_DOTS_LOWERCASE, // ö
+        O_WITH_LEFT_ACCENT, // ò
+        U_WITH_HAT_LOWERCASE, // û
+        U_WITH_LEFT_ACCENT_LOWERCASE, // ù
+        Y_WITH_DOTS_LOWERCASE, // ÿ
+        O_WITH_DOTS_CAPITAL, // Ö
+        U_WITH_DOTS_CAPITAL, // Ü
+        CENTS_SIGN, // ¢
+        POUNDS_SIGN, // £
+        YEN_SIGN, // ¥ (FUNNY LOBSTER)
+        PETESA, // ₧ (PHARMACY)
+        FLORIN, // ƒ (FANCY F)
+        A_WITH_RIGHT_ACCENT_LOWERCASE, // á
+        I_WITH_RIGHT_ACCENT_LOWERCASE, // í
+        O_WITH_RIGHT_ACCENT_LOWERCASE, // ó
+        U_WITH_RIGHT_ACCENT_LOWERCASE, // ú
+        N_WITH_TILDE_LOWERCASE, // ñ
+        N_WITH_TILDE_CAPITAL, // Ñ
+        SMALL_LETTER_A, // ª (CLOTH?)
+        SMALL_LETTER_O, // º (CLOTH?)
+        QUESTION_MARK_UPSIDE_DOWN, // ¿
+        REVERSE_NOT_SIGN, // ⌐
+        NOT_SIGN, // ¬
+        FRACTION_HALF, // ½
+        FRACTION_QUARTER, // ¼
+        EXCLAMATION_POINT_UPSIDE_DOWN, // ¡
+        LESS_THAN_DOUBLE, // «
+        GREATER_THAN_DOUBLE, // »
+        SHADED_WALL_LIGHT, // ░
+        SHADED_WALL_MEDIUM, // ▒
+        SHADED_WALL_DARK, // ▓
+        BOX_DRAWING_VERTICAL_SINGLE, // │
+        BOX_DRAWING_T_LEFT_SINGLE, // ┤
+        BOX_DRAWING_T_SINGLE_VERTICAL_DOUBLE_HORIZONTAL, // ╡
+        BOX_DRAWING_T_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╢
+        BOX_DRAWING_CORNER_TOP_RIGHT_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╖
+        BOX_DRAWING_CORNER_TOP_RIGHT_SINGLE_VERTICAL_DOUBLE_HORIZONTAL, // ╕
+        BOX_DRAWING_T_LEFT_DOUBLE, // ╣
+        BOX_DRAWING_VERTICAL_DOUBLE, // ║
+        BOX_DRAWING_CORNER_TOP_RIGHT_DOUBLE, // ╗ 
+        BOX_DRAWING_CORNER_BOTTOM_RIGHT_DOUBLE, // ╝
+        BOX_DRAWING_CORNER_BOTTOM_RIGHT_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╜
+        BOX_DRAWING_CORNER_BOTTOM_RIGHT_SINGLE_VERTICAL_DOUBLE_HORIZONTAL, // ╛
+        BOX_DRAWING_CORNER_TOP_RIGHT_SINGLE, // ┐
+        BOX_DRAWING_CORNER_BOTTOM_LEFT_SINGLE, // └
+        BOX_DRAWING_T_UPWARD_SINGLE, // ┴
+        BOX_DRAWING_T_DOWNARD_SINGLE, // ┬
+        BOX_DRAWING_T_RIGHT_SINGLE, // ├
+        BOX_DRAWING_HORIZONTAL_SINGLE, // ─ (LONG DASH)
+        BOX_DRAWING_CROSS_SINGLE, // ┼
+        BOX_DRAWING_T_RIGHT_SINGLE_VERTICAL_DOUBLE_HORIZONTAL, // ╞
+        BOX_DRAWING_T_RIGHT_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╟
+        BOX_DRAWING_CORNER_BOTTOM_LEFT_DOUBLE, // ╚
+        BOX_DRAWING_CORNER_TOP_LEFT_DOUBLE, // ╔
+        BOX_DRAWING_T_UPWARD_DOUBLE, // ╩
+        BOX_DRAWING_T_DOWNWARD_DOUBLE, // ╦
+        BOX_DRAWING_T_RIGHT_DOUBLE, // ╠
+        BOX_DRAWING_HORIZONTAL_DOUBLE, // ═
+        BOX_DRAWING_CROSS_DOUBLE, // ╬
+        BOX_DRAWING_T_UPWARD_SINGLE_VERTICAL_DOUBLE_HORIZONTAL, // ╧
+        BOX_DRAWING_T_UPWARD_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╨
+        BOX_DRAWING_T_DOWNWARD_SINGLE_VERTICAL_DOUBLE_HORIZONTAL, // ╤
+        BOX_DRAWING_T_DOWNWARD_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╥
+        BOX_DRAWING_CORNER_BOTTOM_LEFT_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╙
+        BOX_DRAWING_CORNER_BOTTOM_LEFT_SINGLE_VERTICAL_DOUBLE_HORIZONTAL, // ╘
+        BOX_DRAWING_CORNER_TOP_LEFT_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╒
+        BOX_DRAWING_CORNER_TOP_LEFT_SINGLE_VERTICAL_DOUBLE_HORIZONTAL, // ╓
+        BOX_DRAWING_CROSS_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╫
+        BOX_DRAWING_CROSS_SINGLE_VERTICAL_DOUBLE_HORIZONTAL, // ╪
+        BOX_DRAWING_CORNER_BOTTOM_RIGHT_SINGLE, // ┘
+        BOX_DRAWING_CORNER_TOP_LEFT_SINGLE, // ┌
+        SOLID, // █
+        SOLID_BOTTOM_HALF, // ▄
+        SOLID_LEFT_HALF, // ▌
+        SOLID_RIGHT_HALF, // ▐
+        SOLID_TOP_HALF, // ▀
+        GREEK_ALPHA, // α
+        GREEK_BETA, // ß
+        GREEK_GAMMA, // Γ
+        GREEK_PI, // π
+        GREEK_SIGMA_CAPITAL, // Σ
+        GREEK_SIGMA_LOWERCASE, // σ
+        GREEK_MEW, // µ
+        GREEK_TAU, // τ
+        GREEK_PHI_CAPITAL, // Φ
+        GREEK_THETA, // Θ
+        GREEK_OMEGA, // Ω
+        GREEK_DELTA_LOWERCASE, // δ
+        INFINITY, // ∞
+        GREEK_PHI_LOWERCASE, // φ
+        GREEK_EPSILON_CAPITAL, // ε
+        INTERSECTION, // ∩
+        TRIPLE_BAR, // ≡
+        PLUS_MINUS, // ±
+        GREATER_THAN_OR_EQUAL_TO, // ≥
+        LESS_THAN_OR_EQUAL_TO, // ≤
+        INTEGRAL_TOP_HALF, // ⌠
+        INTEGRAL_BOTTOM_HALF, // ⌡
+        DIVISION_SIGN, // ÷
+        TILDE_DOUBLE, // ≈ (APPROX. EQUALS)
+        DEGREE, // °
+        BULLET_OPERATOR, // ∙ (SMALL BULLET)
+        INTERPUNCT_OPERATOR, // · (HALF SMALL BULLET)
+        SQUARE_ROOT, // √ (RADICAL)
+        SMALL_LETTER_N, // ⁿ
+        SMALL_NUMBER_2, // ² (SQUARED)
+        SQUARE_FILLED, // ■
+        SQUARE_HOLLOW, // □
+    };
+
 };
 
 /* Stream insertion overload for SDL_Color */
