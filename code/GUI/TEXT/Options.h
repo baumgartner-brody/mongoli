@@ -6,14 +6,17 @@
 
 /* Forward declaration of entity to store Entity* */
 class Entity;
+class EntityString;
 
 class Options {
 public:
-    Options() = default;
-    ~Options() = default;
+    Options(); // unused
+    Options(const int &x, const int &y, const std::initializer_list<std::string> &option_strings);
+    Options(const int &x, const int &y, const unsigned int &num_options_to_display, const std::initializer_list<std::string> &option_strings);
+    ~Options();
 
-    /* Handles any events that would change options */
-    void update();
+    /* Returns -1 if no option has been selected, or the numeric index of the selected option. */
+    const int update();
 
     /* Clear all displayed options entities (but retain internal options data) */
     void clear() noexcept;
@@ -28,8 +31,13 @@ private:
     /* The current selected option (defaults to 0) */
     unsigned int _selected_option = 0u;
 
+    std::vector<EntityString*> _options_entities;
+
     Entity *_upArrow = nullptr;
     Entity *_downArrow = nullptr;
+
+    /* Used to store the x & y position of the options object upon its construction. */
+    int _x, _y; 
 };
 
 #endif /* _OPTIONS_H_ */

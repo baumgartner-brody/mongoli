@@ -2,6 +2,7 @@
 
 #include "../render/TextureManager.h"
 #include "TEXT/TextManager.h"
+#include "TEXT/Options.h"
 #include "../ECS/Components.h"
 #include "../PHYSICS/Collision.h"
 #include "../GEN/Worldgen.h"
@@ -43,6 +44,8 @@ void Menu::update() {
         _e = false;
     }
 
+    this->_options->update();
+    /*
     if (Game::event->type == SDL_KEYDOWN && !Game::event->key.repeat && !_e) {
         if (Game::event->key.keysym.sym == SDLK_DOWN) {
             if (this->_selected_option == 0) {
@@ -94,6 +97,7 @@ void Menu::update() {
             }
         }
     }
+    */
 }
 
 void Menu::beginEnteringWorldName() {
@@ -197,6 +201,7 @@ void Menu::_generateE() noexcept {
 
 void Menu::_generateOptions() noexcept {
 
+    /*
     int x = 360;
     int y = 320;
 
@@ -213,15 +218,15 @@ void Menu::_generateOptions() noexcept {
     this->_exit_game = new EntityString(x, y, "FG_WHITE_BG_BLACK", "Exit");
 
     this->_selected_option = 0;
+    */
+    this->_options = new Options(360, 320, {"New game", "Load game", "Exit"});
 
 }
 
 void Menu::_clearOptions() noexcept {
 
-    delete this->_new_game;
-    delete this->_load_game;
-    delete this->_exit_game;
-    this->_new_game = this->_load_game = this->_exit_game = nullptr;
+    delete this->_options;
+    this->_options = nullptr;
 }
 
 void Menu::_TESTFUNCTION_DRAW_INN_ROOM1() noexcept {

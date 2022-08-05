@@ -7,6 +7,7 @@
 
 class Entity;
 class HitboxComponent;
+class Options;
 
 class Menu {
 public:
@@ -32,6 +33,8 @@ private:
     EntityString *_new_game = nullptr;
     EntityString *_load_game = nullptr;
     EntityString *_exit_game = nullptr;
+
+    Options *_options = nullptr;
 
     std::vector<Entity*> _enter_world_name;
 
