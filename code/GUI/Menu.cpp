@@ -40,11 +40,13 @@ void Menu::update() {
         std::cout << "List of directories in \"src\\saves\":\n";
         for (auto & s : WorldGen::getDirectories("src\\saves")) std::cout << "\"" << s << "\"\n";
         _e = true;
+        // return; (instead of static bool _e)
     } else {
         _e = false;
     }
 
-    this->_options->update();
+    if (this->_options->update() == 2)
+        Game::_running = false;
     /*
     if (Game::event->type == SDL_KEYDOWN && !Game::event->key.repeat && !_e) {
         if (Game::event->key.keysym.sym == SDLK_DOWN) {

@@ -9,11 +9,11 @@ Options::Options() {
 }
 
 Options::Options(const int &x, const int &y, const std::initializer_list<std::string> &option_strings) {
-    // TODO: 
-    int tmpy = y;
-    for (auto & s : option_strings) {
-        this->_options_entities.emplace_back(new EntityString(x, tmpy, "FG_WHITE_BG_BLACK", s));
-        tmpy += 10;
+    for (unsigned int i = 0u; i < option_strings.size(); ++i) {
+        if (i == this->_selected_option) 
+            this->_options_entities.emplace_back(new EntityString(x, y + (i * 10), "FG_BRIGHTGREEN_BG_BLACK", *(option_strings.begin() + i)));
+        else 
+            this->_options_entities.emplace_back(new EntityString(x, y + (i * 10), "FG_WHITE_BG_BLACK", *(option_strings.begin() + i)));
     }
 }
 
