@@ -10,7 +10,6 @@ class EntityString;
 
 class Options {
 public:
-    Options(); // unused
     Options(const int &x, const int &y, const std::initializer_list<std::string> &option_strings);
     Options(const int &x, const int &y, const unsigned int &num_options_to_display, const std::initializer_list<std::string> &option_strings);
     ~Options();

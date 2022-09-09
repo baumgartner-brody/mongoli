@@ -19,7 +19,7 @@ private:
     /* Assets require a Texture* to be created */
     Asset(SDL_Texture *t);
 
-    /* Some assets can have a texture and a surface */
+    /* Assets that need to be recolored will need to have a Texture* and a Surface* */
     Asset(SDL_Surface *s, SDL_Texture *t);
 
     /* Copy constructor for asset, (just a shallow copy of the Texture*) */
@@ -45,17 +45,17 @@ public:
     /* getAsset - used for both adding and getting assets. */
     /*  getAsset with no SDL_Texture* should only be used when you are certain the texture exists within */
     /*  the asset manager. It will exit the program otherwise. */
-    Asset* getAsset(const std::string &assetName);
+    Asset* getAsset(const Uint8 &assetNumber);
 
     /* Could be used to modify an asset but is mainly used for adding */
-    void addAsset(const std::string &assetName, SDL_Texture *t);
+    void addAsset(const Uint8 &assetNumber, SDL_Texture *t);
 
     /* addAsset but with SDL_Surface* */
-    void addAsset(const std::string &assetName, SDL_Surface *s, SDL_Texture *t);
+    void addAsset(const Uint8 &assetNumber, SDL_Surface *s, SDL_Texture *t);
 
     void clear() noexcept;
 private:
-    std::map<const std::string, Asset*> assets;
+    std::map<const Uint8, Asset*> assets;
 };
 
 #endif /* _ASSETMANAGER_H_ */

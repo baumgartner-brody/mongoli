@@ -18,10 +18,10 @@ public:
     SpriteComponent(Asset *asset, const int &xpos, const int &ypos, const unsigned int &w, const unsigned int &h);
 
     /* Creates a SpriteComponent from an assetName and a source rect. */
-    SpriteComponent(const std::string &assetName, const SDL_Rect &srcR);
+    SpriteComponent(const Uint8 &assetNumber, const SDL_Rect &srcR);
 
     /* Creates a SpriteComponent from an assetName and source rect dimensions. */
-    SpriteComponent(const std::string &assetName, const int &xpos, const int &ypos, const unsigned int &w, const unsigned int &h);
+    SpriteComponent(const Uint8 &assetNumber, const int &xpos, const int &ypos, const unsigned int &w, const unsigned int &h);
 
     /* SpriteComponent copy constructor */
     SpriteComponent(const SpriteComponent &old);
@@ -42,7 +42,7 @@ public:
     void addAnimation(const uint8_t &index, const uint8_t &num_frames, const unsigned int &speed, const unsigned int &y);
 
     /* Swap this Sprite's asset* with a new one */
-    void swapAsset(const std::string &assetName);
+    void swapAsset(const Uint8 &assetNumber);
 
     /* Adjust this Sprite's srcRect */
     void moveSrcR(const int &xpos, const int &ypos) noexcept { this->srcR.x = xpos; this->srcR.y = ypos; }

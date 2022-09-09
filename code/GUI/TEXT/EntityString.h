@@ -6,16 +6,19 @@
 
 #include <string>
 #include <vector>
+#include <stdint.h>
+
+typedef uint8_t Uint8;
 
 class Entity;
 
 class EntityString {
 public:
-    EntityString(const int &x, const int &y, const std::string &assetName, const std::string &text);
+    EntityString(const int &x, const int &y, const Uint8 &assetNumber, const std::string &text);
     ~EntityString();
 
     /* Swaps the asset name of all the entities in this EntityString */
-    void recolor(const std::string &assetName);
+    void recolor(const Uint8 &assetNumber);
 
     /* Deletes the entities from this EntityString */
     void clear() noexcept; 

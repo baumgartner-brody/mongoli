@@ -9,6 +9,7 @@ class AssetManager;
 class Entity;
 class KeyboardController;
 class Manager;
+class Announcements;
 
 enum groupLabels : std::size_t {
     groupPlayers
@@ -43,6 +44,8 @@ public:
 
     static Manager *manager;
     static AssetManager *assetManager;
+
+    static Announcements *announcements;
 
     static Entity *mouse;
     static KeyboardController *keyboard;

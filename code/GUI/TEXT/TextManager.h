@@ -29,23 +29,23 @@ namespace TextManager {
 
     /* Adds text at the current TextManager position with the desired asset name */
     /* The resultant letter entities are returned */
-    std::vector<Entity*> addText(int x, int y, const std::string &assetName, const std::string &text);
+    std::vector<Entity*> addText(int x, int y, const Uint8 &assetNumber, const std::string &text);
 
     /* Adds a singular character entity at the desired location */
-    Entity* addText(int x, int y, const std::string &assetName, const Uint8 &c);
+    Entity* addText(int x, int y, const Uint8 &assetNumber, const Uint8 &c);
 
     /* Given a vector of letter entities, iterate thru and recolor them. */
-    void recolorText(std::vector<Entity*> &text_to_recolor, const std::string &newColorAssetName);
+    void recolorText(std::vector<Entity*> &text_to_recolor, const Uint8 &newAssetColorNumber);
 
     /* Generates a random foreground color to go with the provided background color */
-    const std::string generateRandomTextColor(const std::string &BG_COLOR);
+    const Uint8 generateRandomTextColor(const Uint8 &background_color);
 
     /* Sets the CAPS bool to the current state of CAPSLOCK */
     /* This should be called once before every attempt to get text from the player */
     void getCAPSState();
 
     /* Allows the user to type until an [ENTER] key is detected */
-    const bool freeKeyboardEnter(int x, int y, const std::string &assetName);
+    const bool freeKeyboardEnter(int x, int y, const Uint8 &assetNumber);
 
     /* Destroys all current entities in the free keyboard display text */
     void destroyFreeKeyboardEntry();

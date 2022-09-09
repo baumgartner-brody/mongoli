@@ -1,0 +1,16 @@
+Big TODO: Change the way the color implementations work to be consistent with the windows coloring scheme 0x00 = BLACK BLACK 0x 0f = BLACK WHITE, etc.
+
+Devise some sort of special character to allow for multi-colored strings 
+
+ White text + red value + white text 
+
+This may require a rework of EntityString to make each character associate with its own color value 
+This will effectively make every character a 16-bit short int as opposed to an 8-bit int 
+
+Instead of converting every 8 bit char to a 16 bit one, a special delimeter should be used to signal control codes to entitystrings
+Something like 
+
+^^ - ^
+^c - change color
+^k - randomize text 
+etc.

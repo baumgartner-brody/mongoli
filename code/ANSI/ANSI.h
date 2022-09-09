@@ -88,7 +88,10 @@ namespace ANSI {
             const SDL_Color& operator*();
 
             /* Get the corresponding std::string color name from SDLCOLOR_LOOKUP */
-            const std::string& getColorName();
+            const std::string& getColorName() const;
+
+            /* Get the corresponding hex value for the current color */
+            const Uint8& numeric() const { return this->_current; }
 
             /* + Standard arithmetic operators + */
             friend const SDLCOLOR_ITERATOR operator+(const SDLCOLOR_ITERATOR &i, const int &x);
@@ -124,6 +127,29 @@ namespace ANSI {
     const bool operator!=(const SDLCOLOR_ITERATOR &i1, const SDLCOLOR_ITERATOR &i2) noexcept;
     const SDLCOLOR_ITERATOR operator+(const SDLCOLOR_ITERATOR &i, const int &x);
     const SDLCOLOR_ITERATOR operator-(const SDLCOLOR_ITERATOR &i, const int &x);
+
+    /* Maps each color to its appropriate hex nibble */
+    namespace NUMERIC {
+        const Uint8 BLACK = Uint8(0);
+        const Uint8 DARK_BLUE = Uint8(1);
+        const Uint8 DARK_GREEN = Uint8(2);
+        const Uint8 DARK_CYAN = Uint8(3);
+        const Uint8 DARK_RED = Uint8(4);
+        const Uint8 DARK_PURPLE = Uint8(5);
+        const Uint8 DARK_YELLOW = Uint8(6);
+        const Uint8 LIGHT_GREY = Uint8(7);
+        const Uint8 DARK_GREY = Uint8(8);
+        const Uint8 BRIGHT_BLUE = Uint8(9);
+        const Uint8 BRIGHT_GREEN = Uint8(10);
+        const Uint8 BRIGHT_CYAN = Uint8(11);
+        const Uint8 BRIGHT_RED = Uint8(12);
+        const Uint8 BRIGHT_PURPLE = Uint8(13);
+        const Uint8 BRIGHT_YELLOW = Uint8(14);
+        const Uint8 WHITE = Uint8(15);
+
+        /* Returns the appropriate 8-bit color code for a foreground and background color of choice */
+        const Uint8 createColorCode(const Uint8 &FG, const Uint8 &BG);
+    };
 
     /* Defines the SDL_Color equivalent of all ANSI Colors */
     class SDLCOLOR {
@@ -381,8 +407,8 @@ namespace ANSI {
         BOX_DRAWING_T_DOWNWARD_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╥
         BOX_DRAWING_CORNER_BOTTOM_LEFT_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╙
         BOX_DRAWING_CORNER_BOTTOM_LEFT_SINGLE_VERTICAL_DOUBLE_HORIZONTAL, // ╘
-        BOX_DRAWING_CORNER_TOP_LEFT_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╒
-        BOX_DRAWING_CORNER_TOP_LEFT_SINGLE_VERTICAL_DOUBLE_HORIZONTAL, // ╓
+        BOX_DRAWING_CORNER_TOP_LEFT_SINGLE_VERTICAL_DOUBLE_HORIZONTAL, // ╒
+        BOX_DRAWING_CORNER_TOP_LEFT_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╓
         BOX_DRAWING_CROSS_DOUBLE_VERTICAL_SINGLE_HORIZONTAL, // ╫
         BOX_DRAWING_CROSS_SINGLE_VERTICAL_DOUBLE_HORIZONTAL, // ╪
         BOX_DRAWING_CORNER_BOTTOM_RIGHT_SINGLE, // ┘

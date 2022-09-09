@@ -43,24 +43,24 @@ AssetManager::AssetManager() {
 
 AssetManager::~AssetManager() { this->clear(); }
 
-Asset* AssetManager::getAsset(const std::string &assetName) {
-    if (this->assets.find(assetName) == std::end(this->assets)) {
-        std::cerr << "No asset named \"" << assetName << "\" exists!\n";
+Asset* AssetManager::getAsset(const Uint8 &assetNumber) {
+    if (this->assets.find(assetNumber) == std::end(this->assets)) {
+        std::cerr << "No asset \"0x" << std::hex << (int)assetNumber << "\" exists!\n";
         exit(-1);
     }
-    return this->assets[assetName];
+    return this->assets[assetNumber];
 }
 
-void AssetManager::addAsset(const std::string &assetName, SDL_Texture *t) {
+void AssetManager::addAsset(const Uint8 &assetNumber, SDL_Texture *t) {
     /* Prevent duplicate assets (and mem leaks) */
-    if (this->assets.count(assetName) == 0)
-        this->assets[assetName] = new Asset(t);
+    if (this->assets.count(assetNumber) == 0)
+        this->assets[assetNumber] = new Asset(t);
 }
 
-void AssetManager::addAsset(const std::string &assetName, SDL_Surface *s, SDL_Texture *t) {
+void AssetManager::addAsset(const Uint8 &assetNumber, SDL_Surface *s, SDL_Texture *t) {
     /* Prevent duplicate assets (and mem leaks) */
-    if (this->assets.count(assetName) == 0)
-        this->assets[assetName] = new Asset(s, t);
+    if (this->assets.count(assetNumber) == 0)
+        this->assets[assetNumber] = new Asset(s, t);
 }
 
 void AssetManager::clear() noexcept {

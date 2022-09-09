@@ -36,7 +36,7 @@ void Map::handleEvents() {
             std::cout << "Left click on map detected\n";
             Entity &e = Map::_manager->addEntity();
             e.addComponent<TransformComponent>(Game::mouse->getComponent<HitboxComponent>()._r.x, Game::mouse->getComponent<HitboxComponent>()._r.y, 10, 10);
-            e.addComponent<SpriteComponent>("FG_BRIGHTPURPLE_BG_BLACK", TextManager::createSourceRect('e'));
+            e.addComponent<SpriteComponent>(0x0d, TextManager::createSourceRect('e'));
             e.addGroup(0u);
             SDL_Delay(100);
         }

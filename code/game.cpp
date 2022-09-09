@@ -7,8 +7,7 @@
 #include "PHYSICS/Collision.h"
 
 #include "ANSI/ANSI.h"
-#include "GUI/TEXT/TextManager.h"
-#include "GUI/Menu.h"
+#include "GUI/GUI.h"
 
 #include "GEN/Worldgen.h"
 #include "GEN/Map.h"
@@ -28,6 +27,7 @@ Game::~Game() {
 SDL_Renderer* Game::renderer;
 Manager* Game::manager = new Manager();
 AssetManager* Game::assetManager = new AssetManager();
+Announcements* Game::announcements = new Announcements();
 Entity* Game::mouse = &(Game::manager->addEntity());
 KeyboardController* Game::keyboard;
 bool Game::_running = false;
@@ -84,6 +84,8 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
 
         menu->init();
 
+        announcements->init();
+
         std::vector<SDL_Color> c_in, c_out;
         c_in.emplace_back(ANSI::SDLCOLOR::BLACK);
         c_in.emplace_back(ANSI::SDLCOLOR::WHITE);
@@ -102,7 +104,7 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
         SDL_Surface *s(TextureManager::SurfaceTools::createSurface(FONT_TEXTURE_FILE));
         SDL_Surface *sub(TextureManager::SurfaceTools::createSubSurface(s, TextManager::createSourceRect('e')));
         SDL_FreeSurface(s);
-        Game::assetManager->addAsset("TEST", TextureManager::TextureTools::createTexture(sub));
+        //Game::assetManager->addAsset("TEST", TextureManager::TextureTools::createTexture(sub));
 
         /*
         e4.addComponent<TransformComponent>(100, 100, 10, 10);
@@ -267,6 +269,8 @@ void Game::render() {
     for (auto & p : players) p->draw();
 
     menu->draw();
+
+    announcements->draw();
 
     SDL_RenderPresent(Game::renderer);
 }

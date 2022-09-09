@@ -23,8 +23,9 @@ void TextManager::init() {
             /* Do not create assets when bg_color == fg_color */
             if (*fg_itr == *bg_itr) continue;
 
-            /* Build the name of this asset */
-            std::string assetName = "FG_" + fg_itr.getColorName() + "_BG_" + bg_itr.getColorName();            
+            /* Build the hex color code of this asset */
+            //std::string assetName = "FG_" + fg_itr.getColorName() + "_BG_" + bg_itr.getColorName();   
+            Uint8 assetNumber = ANSI::NUMERIC::createColorCode(fg_itr.numeric(), bg_itr.numeric());      
 
             /* Build the c_out vector */
             std::vector<SDL_Color> c_out;
@@ -32,10 +33,10 @@ void TextManager::init() {
             c_out.emplace_back(*fg_itr);
 
             /* Create the corresponding asset */
-            Game::assetManager->addAsset(assetName, TextureManager::TextureTools::createRecoloredTexture(FONT_TEXTURE_FILE, c_in, c_out));
+            Game::assetManager->addAsset(assetNumber, TextureManager::TextureTools::createRecoloredTexture(FONT_TEXTURE_FILE, c_in, c_out));
 
             /* Debug */
-            std::cout << "Created asset \"" << assetName << "\"\n";
+            std::cout << "Created asset \"" << std::hex << (int)assetNumber << "\"\n";
 
         }
     }
@@ -121,7 +122,7 @@ SDL_Rect TextManager::createSourceRect(const Uint8 &c) {
 
 /* Adds text at the current TextManager position with the desired asset name */
 /* The resultant letter entities are returned */
-std::vector<Entity*> TextManager::addText(int x, int y, const std::string &assetName, const std::string &text) {
+std::vector<Entity*> TextManager::addText(int x, int y, const Uint8 &assetNumber, const std::string &text) {
 
     /* The vector to return */
     std::vector<Entity*> v;
@@ -144,7 +145,7 @@ std::vector<Entity*> TextManager::addText(int x, int y, const std::string &asset
             continue;
         }
 
-        v.emplace_back(TextManager::addText(x, y, assetName, static_cast<Uint8>(l)));
+        v.emplace_back(TextManager::addText(x, y, assetNumber, static_cast<Uint8>(l)));
 
         /* Move the next letter's position */
         x += 10;
@@ -154,32 +155,31 @@ std::vector<Entity*> TextManager::addText(int x, int y, const std::string &asset
 }
 
 /* Adds a singular character entity at the desired location */
-Entity* TextManager::addText(int x, int y, const std::string &assetName, const Uint8 &c) {
+Entity* TextManager::addText(int x, int y, const Uint8 &assetNumber, const Uint8 &c) {
     Entity *e = &Game::manager->addEntity();
     e->addComponent<TransformComponent>(x, y, 10, 10);
-    e->addComponent<SpriteComponent>(assetName, TextManager::createSourceRect(c));
+    e->addComponent<SpriteComponent>(assetNumber, TextManager::createSourceRect(c));
     e->addGroup(0u);
     return e;
 }
 
 /* Given a vector of letter entities, iterate thru and recolor them. */
-void TextManager::recolorText(std::vector<Entity*> &text_to_recolor, const std::string &newColorAssetName) {
+void TextManager::recolorText(std::vector<Entity*> &text_to_recolor, const Uint8 &newAssetColorNumber) {
     for (auto & e : text_to_recolor)
-        e->getComponent<SpriteComponent>().swapAsset(newColorAssetName);
+        e->getComponent<SpriteComponent>().swapAsset(newAssetColorNumber);
 }
 
 /* Generates a random foreground color to go with the provided background color */
-const std::string TextManager::generateRandomTextColor(const std::string &BG_COLOR) {
+const Uint8 TextManager::generateRandomTextColor(const Uint8 &BG_COLOR) {
 
     int r;
 
     do {
         r = std::rand() % 16;
-    } while (ANSI::SDLCOLOR_LOOKUP::NAME[r] == BG_COLOR);
+    } while (r == BG_COLOR);
     
-    std::string s = "FG_" + ANSI::SDLCOLOR_LOOKUP::NAME[r] + "_BG_" + BG_COLOR;
-
-    return s;
+    //std::string s = "FG_" + ANSI::SDLCOLOR_LOOKUP::NAME[r] + "_BG_" + BG_COLOR;
+    return ANSI::NUMERIC::createColorCode(r, BG_COLOR);
 }
 
 void TextManager::getCAPSState() {
@@ -192,7 +192,7 @@ void TextManager::getCAPSState() {
 }
 
 /* Allows the user to type until an [ENTER] key is detected */
-const bool TextManager::freeKeyboardEnter(int x, int y, const std::string &assetName) {    
+const bool TextManager::freeKeyboardEnter(int x, int y, const Uint8 &assetNumber) {    
 
     if (Game::event->type == SDL_KEYDOWN && !Game::event->key.repeat) {
         if (Game::event->key.keysym.sym == SDLK_RETURN || Game::event->key.keysym.sym == SDLK_RETURN2) {
@@ -205,12 +205,12 @@ const bool TextManager::freeKeyboardEnter(int x, int y, const std::string &asset
             }
             for (auto & e : *TextManager::freeKeyboardDisplayText) e->destroy();
             TextManager::freeKeyboardDisplayText->clear();
-            *TextManager::freeKeyboardDisplayText = TextManager::addText(x, y, assetName, *TextManager::freeKeyboardEntry);
+            *TextManager::freeKeyboardDisplayText = TextManager::addText(x, y, assetNumber, *TextManager::freeKeyboardEntry);
         } else if (Game::event->key.keysym.sym == SDLK_BACKSPACE && !TextManager::freeKeyboardEntry->empty()) {
             TextManager::freeKeyboardEntry->pop_back();
             for (auto & e : *TextManager::freeKeyboardDisplayText) e->destroy();
             TextManager::freeKeyboardDisplayText->clear();
-            *TextManager::freeKeyboardDisplayText = TextManager::addText(x, y, assetName, *TextManager::freeKeyboardEntry);
+            *TextManager::freeKeyboardDisplayText = TextManager::addText(x, y, assetNumber, *TextManager::freeKeyboardEntry);
         } else if (Game::event->key.keysym.sym == SDLK_LSHIFT || Game::event->key.keysym.sym == SDLK_RSHIFT || Game::event->key.keysym.sym == SDLK_CAPSLOCK) {
             std::cout << "Triggered shift event\n";
             *TextManager::CAPS = !(*TextManager::CAPS);

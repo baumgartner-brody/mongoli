@@ -4,7 +4,6 @@
 #include "TEXT/TextManager.h"
 #include "TEXT/Options.h"
 #include "../ECS/Components.h"
-#include "../PHYSICS/Collision.h"
 #include "../GEN/Worldgen.h"
 
 Menu::Menu() {
@@ -31,7 +30,7 @@ void Menu::update() {
     static bool _e = false;
 
     /* automatically triggers next typing event upon [ENTER] */
-    if (this->_entering_world_name && TextManager::freeKeyboardEnter(360, 330, "FG_WHITE_BG_BLACK")) {
+    if (this->_entering_world_name && TextManager::freeKeyboardEnter(360, 330, 0x0f)) {
         this->_entering_world_name = false;
         for (auto & e : this->_enter_world_name) e->destroy();
         this->_enter_world_name.clear();
@@ -45,8 +44,16 @@ void Menu::update() {
         _e = false;
     }
 
-    if (this->_options->update() == 2)
+    int r = this->_options->update();
+
+    if (r == 0) {
+        std::cout << "New world?\n";
+        this->beginEnteringWorldName();
+    } else if (r == 1)
+        std::cout << "Load?\n";
+    else if (r == 2)
         Game::_running = false;
+
     /*
     if (Game::event->type == SDL_KEYDOWN && !Game::event->key.repeat && !_e) {
         if (Game::event->key.keysym.sym == SDLK_DOWN) {
@@ -108,7 +115,7 @@ void Menu::beginEnteringWorldName() {
 
     this->_clearOptions();
 
-    this->_enter_world_name = TextManager::addText(320, 320, "FG_WHITE_BG_BLACK", "Name your world:");
+    this->_enter_world_name = TextManager::addText(320, 320, 0x0f, "Name your world:");
 
     TextManager::getCAPSState();
 
@@ -134,7 +141,7 @@ void Menu::_generateE() noexcept {
 
     for (unsigned int i = 0u; i < 2u; ++i) {
         for (unsigned int j = 0u; j < 8u; ++j) {
-            e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor("BLACK"), "e").front());
+            e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor(0x00), "e").front());
             x += 10;
         }
 
@@ -149,7 +156,7 @@ void Menu::_generateE() noexcept {
 
         for (unsigned int j = 0u; j < 2u; ++j) {
             for (unsigned int k = 0u; k < 4u; ++k) {
-                e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor("BLACK"), "e").front());
+                e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor(0x00), "e").front());
                 x += 10;
             }
             x += 40;
@@ -164,7 +171,7 @@ void Menu::_generateE() noexcept {
 
     for (unsigned int i = 0u; i < 2u; ++i) {
         for (unsigned int j = 0u; j < 12u; ++j) {
-            e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor("BLACK"), "e").front());
+            e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor(0x00), "e").front());
             x += 10;
         }
 
@@ -177,7 +184,7 @@ void Menu::_generateE() noexcept {
 
     for (unsigned int i = 0u; i < 2u; ++i) {
         for (unsigned int j = 0u; j < 4u; ++j) {
-            e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor("BLACK"), "e").front());
+            e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor(0x00), "e").front());
             x += 10;
         }
 
@@ -190,7 +197,7 @@ void Menu::_generateE() noexcept {
 
     for (unsigned int i = 0u; i < 2u; ++i) {
         for (unsigned int j = 0u; j < 8u; ++j) {
-            e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor("BLACK"), "e").front());
+            e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor(0x00), "e").front());
             x += 10;
         }
 
@@ -238,66 +245,66 @@ void Menu::_TESTFUNCTION_DRAW_INN_ROOM1() noexcept {
     int x = 500;
     int y = 500;
 
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(ANSI::CHARACTERS::BOX_DRAWING_CORNER_TOP_LEFT_DOUBLE));
+    TextManager::addText(x, y, 0x07, Uint8(ANSI::CHARACTERS::BOX_DRAWING_CORNER_TOP_LEFT_DOUBLE));
     x += 10;
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(ANSI::CHARACTERS::BOX_DRAWING_HORIZONTAL_DOUBLE));
+    TextManager::addText(x, y, 0x07, Uint8(ANSI::CHARACTERS::BOX_DRAWING_HORIZONTAL_DOUBLE));
     x += 10;
-    TextManager::addText(x, y, "FG_BLACK_BG_DARKYELLOW", Uint8(186));
+    TextManager::addText(x, y, 0x06, Uint8(186));
     x += 10;
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(205));
+    TextManager::addText(x, y, 0x07, Uint8(205));
     x += 10;
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(ANSI::CHARACTERS::BOX_DRAWING_CORNER_TOP_RIGHT_DOUBLE));
+    TextManager::addText(x, y, 0x07, Uint8(ANSI::CHARACTERS::BOX_DRAWING_CORNER_TOP_RIGHT_DOUBLE));
 
     y += 10;
     x = 500;
 
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(ANSI::CHARACTERS::TILDE));
+    TextManager::addText(x, y, 0x07, Uint8(ANSI::CHARACTERS::TILDE));
     x += 10;
-    TextManager::addText(x, y, "FG_DARKGREY_BG_BLACK", Uint8('+'));
+    TextManager::addText(x, y, 0x08, Uint8('+'));
     x += 10;
-    TextManager::addText(x, y, "FG_DARKGREY_BG_BLACK", Uint8('+'));
+    TextManager::addText(x, y, 0x08, Uint8('+'));
     x += 10;
-    TextManager::addText(x, y, "FG_DARKGREY_BG_BLACK", Uint8('+'));
+    TextManager::addText(x, y, 0x08, Uint8('+'));
     x += 10;
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(ANSI::CHARACTERS::SOLID));
+    TextManager::addText(x, y, 0x07, Uint8(ANSI::CHARACTERS::SOLID));
     
     y += 10;
     x = 500;
 
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(186));
+    TextManager::addText(x, y, 0x07, Uint8(186));
     x += 10;
-    TextManager::addText(x, y, "FG_DARKGREY_BG_BLACK", Uint8('+'));
+    TextManager::addText(x, y, 0x08, Uint8('+'));
     x += 10;
-    TextManager::addText(x, y, "FG_DARKGREY_BG_BLACK", Uint8('+'));
+    TextManager::addText(x, y, 0x08, Uint8('+'));
     x += 10;
-    TextManager::addText(x, y, "FG_DARKGREY_BG_BLACK", Uint8('+'));
+    TextManager::addText(x, y, 0x08, Uint8('+'));
     x += 10;
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(186));
+    TextManager::addText(x, y, 0x07, Uint8(186));
 
     y += 10;
     x = 500;
 
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(186));
+    TextManager::addText(x, y, 0x07, Uint8(186));
     x += 10;
-    TextManager::addText(x, y, "FG_DARKGREY_BG_BLACK", Uint8('+'));
+    TextManager::addText(x, y, 0x08, Uint8('+'));
     x += 10;
-    TextManager::addText(x, y, "FG_DARKGREY_BG_BLACK", Uint8('+'));
+    TextManager::addText(x, y, 0x08, Uint8('+'));
     x += 10;
-    TextManager::addText(x, y, "FG_DARKYELLOW_BG_BLACK", Uint8(233));
+    TextManager::addText(x, y, 0x06, Uint8(233));
     x += 10;
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(186));
+    TextManager::addText(x, y, 0x07, Uint8(186));
 
     y += 10;
     x = 500;
 
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(200));
+    TextManager::addText(x, y, 0x07, Uint8(200));
     x += 10;
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(205));
+    TextManager::addText(x, y, 0x07, Uint8(205));
     x += 10;
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(205));
+    TextManager::addText(x, y, 0x07, Uint8(205));
     x += 10;
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(205));
+    TextManager::addText(x, y, 0x07, Uint8(205));
     x += 10;
-    TextManager::addText(x, y, "FG_LIGHTGREY_BG_BLACK", Uint8(188));
+    TextManager::addText(x, y, 0x07, Uint8(188));
 
 }

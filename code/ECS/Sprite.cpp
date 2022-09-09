@@ -12,14 +12,14 @@ SpriteComponent::SpriteComponent(Asset *asset, const int &xpos, const int &ypos,
 }
 
 /* Creates a SpriteComponent from an assetName and a source rect. */
-SpriteComponent::SpriteComponent(const std::string &assetName, const SDL_Rect &srcR) {
-    this->_asset = Game::assetManager->getAsset(assetName);
+SpriteComponent::SpriteComponent(const Uint8 &assetNumber, const SDL_Rect &srcR) {
+    this->_asset = Game::assetManager->getAsset(assetNumber);
     this->srcR = srcR;
 }
 
 /* Creates a SpriteComponent from an assetName and source rect dimensions. */
-SpriteComponent::SpriteComponent(const std::string &assetName, const int &xpos, const int &ypos, const unsigned int &w, const unsigned int &h) {
-    this->_asset = Game::assetManager->getAsset(assetName);
+SpriteComponent::SpriteComponent(const Uint8 &assetNumber, const int &xpos, const int &ypos, const unsigned int &w, const unsigned int &h) {
+    this->_asset = Game::assetManager->getAsset(assetNumber);
     this->srcR.x = xpos; this->srcR.y = ypos;
     this->srcR.w = w; this->srcR.h = h;
 }
@@ -94,8 +94,8 @@ void SpriteComponent::addAnimation(const uint8_t &index, const uint8_t &num_fram
 }
 
 /* Swap this Sprite's asset* with a new one */
-void SpriteComponent::swapAsset(const std::string &assetName) {
-    this->_asset = Game::assetManager->getAsset(assetName);
+void SpriteComponent::swapAsset(const Uint8 &assetNumber) {
+    this->_asset = Game::assetManager->getAsset(assetNumber);
 }
 
 /* Operator== for SpriteComponents will only check if the _assets and _transforms point to the */

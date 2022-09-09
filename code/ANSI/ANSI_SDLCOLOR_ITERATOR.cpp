@@ -67,20 +67,20 @@ const SDL_Color& ANSI::SDLCOLOR_ITERATOR::operator*() {
     try {
 
         if (this->_current == 0) return ANSI::SDLCOLOR::BLACK;
-        else if (this->_current == 1) return ANSI::SDLCOLOR::DARK_RED;
+        else if (this->_current == 1) return ANSI::SDLCOLOR::DARK_BLUE;
         else if (this->_current == 2) return ANSI::SDLCOLOR::DARK_GREEN;
-        else if (this->_current == 3) return ANSI::SDLCOLOR::DARK_YELLOW;
-        else if (this->_current == 4) return ANSI::SDLCOLOR::DARK_BLUE;
+        else if (this->_current == 3) return ANSI::SDLCOLOR::DARK_CYAN;
+        else if (this->_current == 4) return ANSI::SDLCOLOR::DARK_RED;
         else if (this->_current == 5) return ANSI::SDLCOLOR::DARK_PURPLE;
-        else if (this->_current == 6) return ANSI::SDLCOLOR::DARK_CYAN;
+        else if (this->_current == 6) return ANSI::SDLCOLOR::DARK_YELLOW;
         else if (this->_current == 7) return ANSI::SDLCOLOR::LIGHT_GREY;
         else if (this->_current == 8) return ANSI::SDLCOLOR::DARK_GREY;
-        else if (this->_current == 9) return ANSI::SDLCOLOR::BRIGHT_RED;
+        else if (this->_current == 9) return ANSI::SDLCOLOR::BRIGHT_BLUE;
         else if (this->_current == 10) return ANSI::SDLCOLOR::BRIGHT_GREEN;
-        else if (this->_current == 11) return ANSI::SDLCOLOR::BRIGHT_YELLOW;
+        else if (this->_current == 11) return ANSI::SDLCOLOR::BRIGHT_CYAN;
         else if (this->_current == 12) return ANSI::SDLCOLOR::BRIGHT_BLUE;
         else if (this->_current == 13) return ANSI::SDLCOLOR::BRIGHT_PURPLE;
-        else if (this->_current == 14) return ANSI::SDLCOLOR::BRIGHT_CYAN;
+        else if (this->_current == 14) return ANSI::SDLCOLOR::BRIGHT_YELLOW;
         else if (this->_current == 15) return ANSI::SDLCOLOR::WHITE;
 
         /* The iterator is out of range */
@@ -95,7 +95,7 @@ const SDL_Color& ANSI::SDLCOLOR_ITERATOR::operator*() {
 
 /* Attempt to get the string that corresponds to the color that this iterator is "on". */
 /*  Exits program if the iterator is out of bounds */
-const std::string& ANSI::SDLCOLOR_ITERATOR::getColorName() { 
+const std::string& ANSI::SDLCOLOR_ITERATOR::getColorName() const { 
     try {
 
         /* Return the string name of this color (if possible). */
