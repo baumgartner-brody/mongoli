@@ -1,5 +1,3 @@
-Big TODO: Change the way the color implementations work to be consistent with the windows coloring scheme 0x00 = BLACK BLACK 0x 0f = BLACK WHITE, etc.
-
 Devise some sort of special character to allow for multi-colored strings 
 
  White text + red value + white text 
@@ -10,7 +8,45 @@ This will effectively make every character a 16-bit short int as opposed to an 8
 Instead of converting every 8 bit char to a 16 bit one, a special delimeter should be used to signal control codes to entitystrings
 Something like 
 
+^ - delimeter (any arbitrary character would work)
 ^^ - ^
 ^c - change color
 ^k - randomize text 
 etc.
+
+Should start leaning towards strings that support the extended ascii code.
+/* https://stackoverflow.com/questions/20294746/strings-of-unsigned-chars */
+typedef basic_string<unsigned char> ustring; 
+
+9-23-2022: The user's folder will also contain a file that stores the date of the last time they opened that folder
+  The worlds will be listed in reverse chronological order when displaying
+  The version number the world was last opened on will also need to be tracked, in case some sort of compatability conversion needs to happen.
+
+9-17-2022: The user's folder worldname will be the timestamp that it was created, and the display name will be held in an internal file.
+
+9-16-2022: TODO The user should be allowed to click and select multiple letters when typing, so all letters will need to be converted to a Uint8 as the user types them.
+  Per the above, an arbitrary value will be chosen to be a delimeter.
+  The letters will therefore need to have hitboxes.
+
+TODO: With the multi-colored strings, announcements will need to be 
+  Note: Extended ascii chars such as '☺' may need to be copied from a hex editor, 
+	as typing them directly does not always choose the right number.
+
+Main menu design and opening:
+  The user gets some sort of cutscene (way down the road)
+  The user enters the main menu with 4 options
+  These options are centered based on an arbitray X value,
+  and the option to load a save world is only shown if saves exist in the directory
+
+UI and player menu design:
+  List of things the player needs to know:
+    Health
+    Hunger
+    Hotbar
+    Inventory
+
+    What they are looking at (entity/container/map object)
+
+Add a method of centering text for TextManager, and clean up freeKeyboardEnable (with blinking cursor) 
+
+Gameplay:

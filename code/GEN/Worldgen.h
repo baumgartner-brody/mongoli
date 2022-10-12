@@ -4,6 +4,10 @@
 #include <string>
 #include <vector>
 
+/* TODO */
+/* Right now these functions belong in a FILESYSTEM namespace */
+/*  They are going to be moved */
+
 namespace WorldGen {
 
     void test();

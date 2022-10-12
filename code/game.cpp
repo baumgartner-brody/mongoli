@@ -8,9 +8,7 @@
 
 #include "ANSI/ANSI.h"
 #include "GUI/GUI.h"
-
-#include "GEN/Worldgen.h"
-#include "GEN/Map.h"
+#include "GEN/GEN.h"
 
 #include <iostream>
 #include <sstream> // mouse position = window title 
@@ -139,7 +137,9 @@ void Game::init(const std::string &title, const int &xpos, const int &ypos, cons
         e5.addGroup(groupPlayers);
         */
 
-       WorldGen::test();
+        WorldGen::test();
+
+        for (auto & s : WorldGen::getDirectories("C:\\Users\\Brody\\Desktop")) std::cout << s << '\n';
 
         mouse->addComponent<HitboxComponent>(0, 0, 10, 10);
         mouse->addComponent<MouseComponent>();
@@ -277,6 +277,7 @@ void Game::render() {
 
 /* Cleans all heap resources owned by the Game object */
 void Game::clean() {
+    
     /* Free the window */
     SDL_DestroyWindow(this->window);
     this->window = nullptr;
@@ -295,6 +296,9 @@ void Game::clean() {
     delete menu;
     menu = nullptr;
 
+    // Since TypedText relies on Entity::destroy() this has to be called before deleting the manager
+    TextManager::free();
+
     /* Free/clear the manager */
     delete Game::manager;
     Game::manager = nullptr;
@@ -306,8 +310,6 @@ void Game::clean() {
     /* Free/clear the assetmanager */
     delete Game::assetManager;
     Game::assetManager = nullptr;
-
-    TextManager::free();
 
     /* Free sound */
     Mix_FreeChunk(mix_chunk);

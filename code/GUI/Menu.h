@@ -44,6 +44,9 @@ private:
 
     void _generateE() noexcept;
 
+    /* Generate a subsection of E */
+    void _generateESection(int &x, int &y, const unsigned int &w, const unsigned int &h, const int &initial_x) noexcept;
+
     void _generateOptions() noexcept;
 
     void _clearOptions() noexcept;

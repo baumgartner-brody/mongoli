@@ -37,8 +37,6 @@ public:
 
     static SDL_Event *event;
 
-    const bool& running() const { return this->_running; }
-
     /* One renderer to rule them all. */
     static SDL_Renderer *renderer;
 

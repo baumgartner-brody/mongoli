@@ -21,37 +21,56 @@ void Menu::init() {
     this->_generateOptions();
 
     /* _TESTING_ */
-    this->_TESTFUNCTION_DRAW_INN_ROOM1();
+    //this->_TESTFUNCTION_DRAW_INN_ROOM1();
 }
 
 void Menu::update() {
 
-    /* This bool is a temporary workaround for not processing two events upon one [ENTER] keypress */
-    static bool _e = false;
-
+    if (this->_entering_world_name) {
+        if (TextManager::freeKeyboardEnter2(0, 0, 0x0e)) {
+            std::cout << "No longer entering text\n";
+            Game::_running = false;
+            this->_entering_world_name = false;
+        }
+        return;
+    }
+    
+    // TODO 
     /* automatically triggers next typing event upon [ENTER] */
-    if (this->_entering_world_name && TextManager::freeKeyboardEnter(360, 330, 0x0f)) {
+    /*if (this->_entering_world_name && TextManager::freeKeyboardEnter2(360, 330, 0x0f)) {
         this->_entering_world_name = false;
         for (auto & e : this->_enter_world_name) e->destroy();
         this->_enter_world_name.clear();
         WorldGen::writeToFile("src/saves/test.txt", *TextManager::freeKeyboardEntry);
         TextManager::destroyFreeKeyboardEntry();
         std::cout << "List of directories in \"src\\saves\":\n";
-        for (auto & s : WorldGen::getDirectories("src\\saves")) std::cout << "\"" << s << "\"\n";
+        //for (auto & s : WorldGen::getDirectories("src\\saves")) std::cout << "\"" << s << "\"\n";
         _e = true;
         // return; (instead of static bool _e)
     } else {
         _e = false;
     }
+    */
 
-    int r = this->_options->update();
+    int r = -1;
+    if (this->_options->isDrawn()) {
+        r = this->_options->update2();
+    }
+
+    // TESTING OPTIONS HIDE-AND-REDRAWABILITY
+    if (Game::event->type == SDL_KEYDOWN && !Game::event->key.repeat && Game::event->key.keysym.sym == SDLK_ESCAPE) {
+        if (this->_options->isDrawn()) this->_options->hide();
+        else this->_options->draw();
+    }
 
     if (r == 0) {
         std::cout << "New world?\n";
         this->beginEnteringWorldName();
     } else if (r == 1)
         std::cout << "Load?\n";
-    else if (r == 2)
+    else if (r == 2) 
+        Game::_running = false;
+    else if (r == 3)
         Game::_running = false;
 
     /*
@@ -113,11 +132,14 @@ void Menu::beginEnteringWorldName() {
 
     std::cout << "begin entering world name\n";
 
-    this->_clearOptions();
+    // TODO - Redraw options if user ESC's out of world name creation
+    this->_options->hide();
 
     this->_enter_world_name = TextManager::addText(320, 320, 0x0f, "Name your world:");
 
     TextManager::getCAPSState();
+
+    SDL_StartTextInput();
 
     this->_entering_world_name = true;
 }
@@ -139,18 +161,12 @@ void Menu::_generateE() noexcept {
     int x = 360;
     int y = 100;
 
-    for (unsigned int i = 0u; i < 2u; ++i) {
-        for (unsigned int j = 0u; j < 8u; ++j) {
-            e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor(0x00), "e").front());
-            x += 10;
-        }
+    const int vertical_spacer = 5;
 
-        y += 10;
-        x = 360;
-    }
+    this->_generateESection(x, y, 8, 2, 360);
 
     x = 340;
-    y += 10;
+    y += vertical_spacer;
 
     for (unsigned int i = 0u; i < 2u; ++i) {
 
@@ -166,46 +182,32 @@ void Menu::_generateE() noexcept {
         x = 340;
     }
 
-    y += 10;
+    y += vertical_spacer;
     x = 340;
 
-    for (unsigned int i = 0u; i < 2u; ++i) {
-        for (unsigned int j = 0u; j < 12u; ++j) {
-            e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor(0x00), "e").front());
-            x += 10;
-        }
+    this->_generateESection(x, y, 12, 2, 340);
 
-        y += 10;
-        x = 340;
-    }
-
-    y += 10;
+    y += vertical_spacer;
     x = 340;
 
-    for (unsigned int i = 0u; i < 2u; ++i) {
-        for (unsigned int j = 0u; j < 4u; ++j) {
-            e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor(0x00), "e").front());
-            x += 10;
-        }
+    this->_generateESection(x, y, 4, 2, 340);
 
-        y += 10;
-        x = 340;
-    }
-
-    y += 10;
+    y += vertical_spacer;
     x = 360;
+    
+    this->_generateESection(x, y, 8, 2, 360);
+}
 
-    for (unsigned int i = 0u; i < 2u; ++i) {
-        for (unsigned int j = 0u; j < 8u; ++j) {
+void Menu::_generateESection(int &x, int &y, const unsigned int &w, const unsigned int &h, const int &initial_x) noexcept {
+    for (unsigned int i = 0u; i < h; ++i) {
+        for (unsigned int j = 0u; j < w; ++j) {
             e_entities.emplace_back(TextManager::addText(x, y, TextManager::generateRandomTextColor(0x00), "e").front());
             x += 10;
         }
 
         y += 10;
-        x = 360;
+        x = initial_x;
     }
-
-
 }
 
 void Menu::_generateOptions() noexcept {
@@ -228,7 +230,7 @@ void Menu::_generateOptions() noexcept {
 
     this->_selected_option = 0;
     */
-    this->_options = new Options(360, 320, {"New game", "Load game", "Exit"});
+    this->_options = new Options(400, 320, 3, {"New game☻", "♦Load game♦", "Settings♥", "Options☻", "Exit☺"}, true);
 
 }
 

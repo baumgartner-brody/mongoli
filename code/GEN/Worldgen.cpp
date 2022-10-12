@@ -8,6 +8,8 @@
 
 /* Currently windows only */
 
+typedef std::basic_string<unsigned char> ustring; // unused
+
 void WorldGen::test() {
     std::cout << "Called worldgen::test()\n";
     std::ofstream f("src/saves/test.txt");
